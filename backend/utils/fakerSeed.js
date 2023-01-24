@@ -26,6 +26,21 @@ for (const i in users) {
 return users
 }
 
+// const seedbookings = (num)  => {
+//     let bookings = new Array(num).fill('');
+
+//     for(const i in bookings){
+//         bookings[i] = {
+//             startdate
+//             enddate
+
+
+//         }
+
+//     }
+
+// }
+
 
 module.exports ={
 
