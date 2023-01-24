@@ -1,0 +1,6 @@
+npx sequelize model:generate --name User --attributes username:string,email:string,hashedPassword:string
+
+npx sequelize migration:generate --name addfirstName
+npx sequelize migration:generate --name addlastName
+
+npx dotenv sequelize db:migrate
