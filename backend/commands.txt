@@ -17,7 +17,7 @@ npx dotenv sequelize db:migrate //completed
 npx sequelize seed:generate --name seed-reviewimages
 npx dotenv sequelize db:seed:all
 
-npx sequelize model:generate --name Reviews --attributes review:string,stars:int
+npx sequelize model:generate --name Reviews --attributes spotId:integer,userId:integer,review:string,stars:int
 npx dotenv sequelize db:migrate
 npx sequelize seed:generate --name seed-reviews
 npx dotenv sequelize db:seed:all
