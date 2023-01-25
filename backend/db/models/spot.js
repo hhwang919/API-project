@@ -14,17 +14,39 @@ module.exports = (sequelize, DataTypes) => {
       Spot.hasMany(models.Booking,{foreignKey:'spotId', onDelete:'CASCADE',hooks:true});
       Spot.hasMany(models.SpotImage,{foreignKey:'spotId', onDelete:'CASCADE',hooks:true});
       Spot.hasMany(models.Review,{foreignKey:'spotId', onDelete:'CASCADE',hooks:true});
-      Spot.belongsTo(models.User,{foreignKey:'owenerId'})
+      Spot.belongsTo(models.User,{foreignKey:'ownerId'})
     }
   }
   Spot.init({
-    ownerId: DataTypes.INTEGER,
-    address: DataTypes.STRING,
+    ownerId: {
+      type:DataTypes.INTEGER,
+      references:{
+        model: 'User'
+      },
+      allowNull:false,
+    },
+    address: {
+      type:DataTypes.STRING,
+      allowNull:false,
+    },
     city: DataTypes.STRING,
     state: DataTypes.STRING,
     country: DataTypes.STRING,
-    lat: DataTypes.DECIMAL,
-    lng: DataTypes.DECIMAL,
+    lat: {
+      type:DataTypes.DECIMAL,
+    //   validate:{
+    //   // max: 180,
+    //   // min: -180/
+    // },
+      allowNull:false,
+    },
+    lng:  {type:DataTypes.DECIMAL,
+  //   validate:{
+  //   // max: 90,
+  //   // min: -90
+  // },
+    allowNull:false,
+  },
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.DECIMAL
