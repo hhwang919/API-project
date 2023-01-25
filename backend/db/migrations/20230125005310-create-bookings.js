@@ -16,9 +16,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id: {
-        type: Sequelize.INTEGER
-      },
       spodId: {
         type: Sequelize.INTEGER
       },
