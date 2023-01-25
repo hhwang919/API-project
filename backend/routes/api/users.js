@@ -51,8 +51,26 @@ router.post(
     }
   );
 
+//Get Current User
 
+// router.get(
+//   '/',
+//   (req, res) => {
+//     const { user } = req;
+//     if (user) {
+//       return res.json({
+//         user: user.toSafeObject()
+//       });
+//     } else 
+//     return res.json({ user: null });
+//   }
+// );
 
+router.get('/',  async(req, res)=>{
+  const userId = req.user.id;
+  const user  = await User.findByPk(userId);
+return     res.json(user);
+})
 
 
 module.exports = router;
