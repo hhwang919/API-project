@@ -12,7 +12,7 @@ npx dotenv sequelize db:migrate //completed
 npx sequelize seed:generate --name seed-bookings
 npx dotenv sequelize db:seed:all
 
-npx sequelize model:generate --name ReviewImages --attributes url:string //completed
+npx sequelize model:generate --name ReviewImages --attributes reviewId:integer,url:string //completed
 npx dotenv sequelize db:migrate //completed
 npx sequelize seed:generate --name seed-reviewimages
 npx dotenv sequelize db:seed:all
