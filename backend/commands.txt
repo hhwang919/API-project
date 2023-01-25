@@ -32,3 +32,6 @@ npx sequelize model:generate --name SpotImage --attributes spotId:integer,url:st
 npx dotenv sequelize db:migrate
 npx sequelize seed:generate --name seed-spotimage
 npx dotenv sequelize db:seed:all
+
+
+npx dotenv sequelize db:seed:all -- --debug  //if only see validation error, this will give more insight as to what it is.
