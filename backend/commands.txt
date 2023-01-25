@@ -7,28 +7,28 @@ npx sequelize seed:generate --name demo-user
 
 npx dotenv sequelize db:migrate
 
-npx sequelize model:generate --name Bookings --attributes id:integer,spodId:integer,userId:integer,startDate:date,endDate:date //completed
+npx sequelize model:generate --name Booking --attributes id:integer,spodId:integer,userId:integer,startDate:date,endDate:date //completed
 npx dotenv sequelize db:migrate //completed
 npx sequelize seed:generate --name seed-bookings
 npx dotenv sequelize db:seed:all
 
-npx sequelize model:generate --name ReviewImages --attributes reviewId:integer,url:string //completed
+npx sequelize model:generate --name ReviewImage --attributes reviewId:integer,url:string //completed
 npx dotenv sequelize db:migrate //completed
-npx sequelize seed:generate --name seed-reviewimages
+npx sequelize seed:generate --name seed-reviewimage
 npx dotenv sequelize db:seed:all
 
-npx sequelize model:generate --name Reviews --attributes spotId:integer,userId:integer,review:string,stars:integer
+npx sequelize model:generate --name Review --attributes spotId:integer,userId:integer,review:string,stars:integer
 npx dotenv sequelize db:migrate
-npx sequelize seed:generate --name seed-reviews
+npx sequelize seed:generate --name seed-review
 npx dotenv sequelize db:seed:all
 
-npx sequelize model:generate --name Spots --attributes ownerId:integer,address:string,city:string,state:string,country:string,lat:decimal,lng:decimal,name:string,description:string,price:decimal
+npx sequelize model:generate --name Spot --attributes ownerId:integer,address:string,city:string,state:string,country:string,lat:decimal,lng:decimal,name:string,description:string,price:decimal
 npx dotenv sequelize db:migrate
-npx sequelize seed:generate --name seed-spots
+npx sequelize seed:generate --name seed-spot
 npx dotenv sequelize db:seed:all
 
 
-npx sequelize model:generate --name SpotImages --attributes spotId:integer,url:string,preview:boolean
+npx sequelize model:generate --name SpotImage --attributes spotId:integer,url:string,preview:boolean
 npx dotenv sequelize db:migrate
-npx sequelize seed:generate --name seed-spotimages
+npx sequelize seed:generate --name seed-spotimage
 npx dotenv sequelize db:seed:all

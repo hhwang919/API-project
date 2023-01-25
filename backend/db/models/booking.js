@@ -18,10 +18,25 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Booking.init({
-    spodId: DataTypes.INTEGER,
+    spotId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE
+    startDate: {
+      type: DataTypes.DATEONLY,
+      validate: {
+        isDate: true
+      }
+    },
+endDate: {
+   type: DataTypes.DATEONLY,
+   validate: {
+     isDate: true,
+     startDateAfterEndDate() {
+        if (this.startDate.isAfter(this.endDate)) {
+    	      throw new Error('Start date must be before the end date.');
+        }
+      }
+    }
+}
   }, {
     sequelize,
     modelName: 'Booking',

@@ -16,25 +16,35 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      spodId: {
-        type: Sequelize.INTEGER
+      spotId: {
+        type: Sequelize.INTEGER,
+        // allowNull: false,
+        // onDelete: 'CASCADE',
+        // references: { model: 'Spot' },
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        // allowNull: false,
+        // onDelete: 'CASCADE',
+        // references: { model: 'User' },
       },
       startDate: {
         type: Sequelize.DATE
+
       },
       endDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        // validate:
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },
