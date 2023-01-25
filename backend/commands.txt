@@ -3,14 +3,32 @@ npx sequelize model:generate --name User --attributes username:string,email:stri
 npx sequelize migration:generate --name addfirstName
 npx sequelize migration:generate --name addlastName
 
+npx sequelize seed:generate --name demo-user
+
 npx dotenv sequelize db:migrate
 
-npx sequelize model:generate --name Bookings --attributes startDate:date,endDate:date
+npx sequelize model:generate --name Bookings --attributes id:integer,spodId:integer,userId:integer,startDate:date,endDate:date //completed
+npx dotenv sequelize db:migrate //completed
+npx sequelize seed:generate --name seed-bookings
+npx dotenv sequelize db:seed:all
 
-npx sequelize model:generate --name ReviewImages --attributes url:string
+npx sequelize model:generate --name ReviewImages --attributes url:string //completed
+npx dotenv sequelize db:migrate //completed
+npx sequelize seed:generate --name seed-reviewimages
+npx dotenv sequelize db:seed:all
 
 npx sequelize model:generate --name Reviews --attributes review:string,stars:int
+npx dotenv sequelize db:migrate
+npx sequelize seed:generate --name seed-reviews
+npx dotenv sequelize db:seed:all
 
 npx sequelize model:generate --name Spots --attributes address:string,city:string,state:string,country:string,lat:decimal,lng:decimal,name:string,description:string,price:decimal
+npx dotenv sequelize db:migrate
+npx sequelize seed:generate --name seed-spots
+npx dotenv sequelize db:seed:all
+
 
 npx sequelize model:generate --name SpotImages --attributes url:string,preview:boolean
+npx dotenv sequelize db:migrate
+npx sequelize seed:generate --name seed-spotimages
+npx dotenv sequelize db:seed:all
