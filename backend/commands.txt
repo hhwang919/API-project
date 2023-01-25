@@ -17,18 +17,18 @@ npx dotenv sequelize db:migrate //completed
 npx sequelize seed:generate --name seed-reviewimages
 npx dotenv sequelize db:seed:all
 
-npx sequelize model:generate --name Reviews --attributes spotId:integer,userId:integer,review:string,stars:int
+npx sequelize model:generate --name Reviews --attributes spotId:integer,userId:integer,review:string,stars:integer
 npx dotenv sequelize db:migrate
 npx sequelize seed:generate --name seed-reviews
 npx dotenv sequelize db:seed:all
 
-npx sequelize model:generate --name Spots --attributes address:string,city:string,state:string,country:string,lat:decimal,lng:decimal,name:string,description:string,price:decimal
+npx sequelize model:generate --name Spots --attributes ownerId:integer,address:string,city:string,state:string,country:string,lat:decimal,lng:decimal,name:string,description:string,price:decimal
 npx dotenv sequelize db:migrate
 npx sequelize seed:generate --name seed-spots
 npx dotenv sequelize db:seed:all
 
 
-npx sequelize model:generate --name SpotImages --attributes url:string,preview:boolean
+npx sequelize model:generate --name SpotImages --attributes spotId:integer,url:string,preview:boolean
 npx dotenv sequelize db:migrate
 npx sequelize seed:generate --name seed-spotimages
 npx dotenv sequelize db:seed:all
