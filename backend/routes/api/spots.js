@@ -20,6 +20,7 @@ const validateSpot = [
 //get all spots
 router.get('/', async(req, res) => {
     const spot = await Spot.findAll ({
+        group: ['Spot.id'],
         attributes: {
             include: [ 
                 [
@@ -113,6 +114,19 @@ router.post( '/',validateSpot,
       return res.json({createSpot});
     }
   );
+
+
+  
+//Get Reviews by Spot Id
+router.get('/:id/reviews',  async(req, res)=>{
+    const userId = req.user.id
+    // console.log(userId)
+    const cUser  = await Review.findAll({where:{spotId:userId}});
+    return res.json(cUser);
+
+});
+
+
 
 
 
