@@ -1,7 +1,7 @@
 'use strict';
 const { faker } = require("@faker-js/faker");
 
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -12,12 +12,12 @@ const users = [...Array(10)].map((user) => (
   {
     username: faker.internet.userName(),
     email: faker.internet.email(),
-    hashedPassword: faker.internet.password(8),
+    hashedPassword: bcrypt.hashSync('password'),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName()
   }
 ))
-
+console.log(users)
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
