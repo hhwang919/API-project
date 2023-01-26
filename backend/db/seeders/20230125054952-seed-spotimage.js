@@ -1,4 +1,20 @@
 'use strict';
+const { faker } = require("@faker-js/faker");
+// const { User } = require('../models');
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+ options.schema = process.env.SCHEMA; // define your schema in options object
+}
+options.tableName = "SpotImages";
+
+const reviewImages = [...Array(20)].map((reviewImage) => (
+  {
+    spotId: faker.datatype.number({'min': 1, 'max': 20 }),
+    url: faker.internet.url(),
+    preview: faker.datatype.boolean()
+  }
+))
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -12,6 +28,11 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+     try {
+      return queryInterface.bulkInsert(options, reviewImages, {});
+     } catch (err) {
+      console.log(err);
+     }  
   },
 
   async down (queryInterface, Sequelize) {
@@ -21,5 +42,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+     return queryInterface.bulkDelete(options, reviewImages, {});
   }
 };
