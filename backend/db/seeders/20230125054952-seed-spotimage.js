@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 options.tableName = "SpotImages";
 
-const reviewImages = [...Array(20)].map((reviewImage) => (
+const SpotImages = [...Array(20)].map((SpotImage) => (
   {
     spotId: faker.datatype.number({'min': 1, 'max': 20 }),
     url: faker.internet.url(),
@@ -29,7 +29,7 @@ module.exports = {
      * }], {});
     */
      try {
-      return queryInterface.bulkInsert(options, reviewImages, {});
+      return queryInterface.bulkInsert(options, SpotImages, {});
      } catch (err) {
       console.log(err);
      }  
@@ -42,6 +42,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-     return queryInterface.bulkDelete(options, reviewImages, {});
+     return queryInterface.bulkDelete(options, SpotImages, {});
   }
 };
