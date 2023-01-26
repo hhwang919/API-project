@@ -1,3 +1,6 @@
+const { Spot, User, sequelize, SpotImage, Review } = require('../../db/models');
+
+
 'use strict';
 const {
   Model
@@ -9,6 +12,17 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
+    // static async createPost({ address, lat, lng, ownerId }) {
+    //   const spot = await Spot.create({
+    //    address,
+    //    lat,
+    //    lng,
+    //    ownerId
+    //   });
+    //   return await User.findByPk(user.id);
+    // }
+
     static associate(models) {
       // define association here
       Spot.hasMany(models.Booking,{foreignKey:'spotId', onDelete:'CASCADE',hooks:true});
@@ -17,13 +31,17 @@ module.exports = (sequelize, DataTypes) => {
       Spot.belongsTo(models.User,{foreignKey:'ownerId'})
     }
   }
+
+
+
+  
   Spot.init({
     ownerId: {
       type:DataTypes.INTEGER,
       references:{
         model: 'User'
       },
-      allowNull:false,
+      // allowNull:false,
     },
     address: {
       type:DataTypes.STRING,
