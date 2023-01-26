@@ -66,11 +66,11 @@ router.post(
 //   }
 // );
 
-router.get('/',  async(req, res)=>{
-  const userId = req.user.id;
-  const user  = await User.findByPk(userId);
-return     res.json(user);
-})
+// router.get('/',  async(req, res)=>{
+//   const userId = req.user.id;
+//   const user  = await User.findByPk(userId);
+// return     res.json(user);
+// })
 
 
 module.exports = router;

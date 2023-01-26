@@ -21,6 +21,18 @@ return     res.json(cUser);
 
 })
 
+
+//
+
+router.get('/:id',  async(req, res)=>{
+    const {userId} = req.user.id;
+    const cUser  = await Spot.findByPk(userId);
+return     res.json(cUser);
+
+})
+
+
+
 // router.get('/', async(req, res)=>{
 //     // const { address, city, state, country, lat, lng, name, description, price, ownerId } = req.body;
 //     const spot = await Spot.findAll({
