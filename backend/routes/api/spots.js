@@ -43,9 +43,10 @@ router.get('/', async(req, res) => {
 // Get all Spots owned by the Current User
 
 router.get('/current',  async(req, res)=>{
-    const userId = req.user.id;
-    const cUser  = await Spot.findByPk(userId);
-return     res.json(cUser);
+    const userId = req.user.id
+    // console.log(userId)
+    const cUser  = await Spot.findAll({where:{ownerId:userId}});
+    return res.json(cUser);
 
 });
 
@@ -89,6 +90,21 @@ if(!spot.id && spot.id === null){
     
     return res.json({spot})
 })
+//Create Spot
+
+router.post(
+    '/',
+    async (req, res) => {
+      const { email, password, username, firstName, lastName } = req.body;
+      const user = await User.signup({ email, username, password, firstName, lastName });
+  
+      await setTokenCookie(res, user);
+  
+      return res.json({
+        user: user
+      });
+    }
+  );
 
 
 
