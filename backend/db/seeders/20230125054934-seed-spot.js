@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 options.tableName = "Spots";
 
-const spots = [...Array(10)].map((spot) => (
+const spots = [...Array(20)].map((spot) => (
   {
     address: faker.address.streetAddress(),
     city: faker.address.city(),
