@@ -4,7 +4,18 @@ const router = express.Router();
 const { Spot, User, sequelize, SpotImage, Review } = require('../../db/models');
 const review = require('../../db/models/review');
 
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
 
+
+
+const validateSpot = [
+    check('address')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 3 })
+    .withMessage('Please enter valid address'),
+    handleValidationErrors
+];
 
 //get all spots
 router.get('/', async(req, res) => {
@@ -43,9 +54,10 @@ router.get('/', async(req, res) => {
 // Get all Spots owned by the Current User
 
 router.get('/current',  async(req, res)=>{
-    const userId = req.user.id;
-    const cUser  = await Spot.findByPk(userId);
-return     res.json(cUser);
+    const userId = req.user.id
+    // console.log(userId)
+    const cUser  = await Spot.findAll({where:{ownerId:userId}});
+    return res.json(cUser);
 
 });
 
@@ -89,6 +101,18 @@ if(!spot.id && spot.id === null){
     
     return res.json({spot})
 })
+//Create Spot
+
+router.post( '/',validateSpot,
+    async (req, res) => {
+        const { address, city, state, country, lat, lng, name  } = req.body;
+        const ownerId = req.user.id
+      const createSpot = await Spot.create({ address, city, state, country, lat, lng, name  });
+
+      res.status(201)
+      return res.json({createSpot});
+    }
+  );
 
 
 
