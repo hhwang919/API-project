@@ -17,7 +17,7 @@ const users = [...Array(10)].map((user) => (
     lastName: faker.name.lastName()
   }
 ))
-console.log(users)
+// console.log(users)   
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {

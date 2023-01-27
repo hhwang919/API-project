@@ -149,7 +149,7 @@ const spots = [...Array(20)].map((spot) => (
     // }
 // ]
 
-console.log(spots)
+// console.log(spots)
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
