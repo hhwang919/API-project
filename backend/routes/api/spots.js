@@ -22,7 +22,7 @@ const validateSpot = [
 //get all spots
 router.get('/', async (req, res) => {
     const spot = await Spot.findAll({
-        group: ['Spot.id'],
+        group: ['Spot.id', 'SpotImages.url'],
         attributes: {
             include: [
                 [
