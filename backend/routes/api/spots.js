@@ -68,6 +68,7 @@ router.get('/current', async (req, res) => {
 // Get details of a Spot from an id
 router.get('/:id', async (req, res) => {
     const spot = await Spot.findByPk(req.params.id, {
+        group: ['Spot.id', 'SpotImages.url'],
         attributes: {
             include: [
                 [

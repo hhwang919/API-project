@@ -22,7 +22,14 @@ const users = [...Array(10)].map((user) => (
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     options.tableName = 'Users';
-    return queryInterface.bulkInsert(options, users, {});
+    let user = {
+      username: 'demo123',
+      email: 'demo@login.com',
+      hashedPassword: bcrypt.hashSync('password'),
+      firstName:'demo',
+      lastName: 'name'
+    }
+    return queryInterface.bulkInsert(options, [user,...users], {});
   },
 
   down: async (queryInterface, Sequelize) => {
