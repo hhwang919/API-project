@@ -116,6 +116,7 @@ router.post('/', validateSpot, async (req, res) => {
 }
 );
 
+
 // ### Edit a Spot
 
 router.put('/:id', async (req, res) => {
@@ -134,9 +135,6 @@ router.put('/:id', async (req, res) => {
         res.status(404);
         return ;
     }
-    
-
-
     if(address) {
         updateSpot.address = address;
     }
@@ -354,7 +352,9 @@ router.get('/:id/bookings', async (req, res) => {
     const result = bookings.map((booking) => {
         if (booking.Spot.ownerId !== req.user.id) {
             return {
-                spotId: booking.spotId
+                spotId: booking.spotId,
+                startDate: booking.startDate,
+                endDate: booking.endDate
              
             }
         } else {
@@ -367,34 +367,7 @@ router.get('/:id/bookings', async (req, res) => {
         }
     });
     return res.json({ Bookings: result });
-    // if (User.userId !== Booking.userId) {
-    //     let id = req.params.id
-    //     id = parseInt(id);
-    //     console.log(typeof (id), id)
-    //     const nonOnwer = await Booking.findAll({
-    //         where: { spotId: id },
-    //     })
-    //     res.json(nonOnwer)
-
-    // } else {
-    //     let uid = req.params.id
-    //     uid = parseInt(uid);
-    //     console.log(typeof (uid), uid)
-    //     const booking = await Booking.findAll({
-    //         where: { spotId: uid },
-    //         include: [
-    //             {
-    //                 model: User,
-    //                 attributes: ['id', 'firstName', 'lastName'],
-    //             }
-    //         ]
-    //     });
-    //     if (!booking || booking.length <= 0) {
-    //         res.status(400)
-    //         return res.json({ message: "Booking couldn't be found" })
-    //     }
-    //     return res.json(booking);
-    // }
+  
 });
 
 

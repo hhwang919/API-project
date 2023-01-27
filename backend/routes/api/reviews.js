@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 
-const { Spot, User, sequelize, SpotImage, Review } = require('../../db/models');
+const { Spot, User, sequelize, SpotImage, Review, ReviewImage } = require('../../db/models');
 const review = require('../../db/models/review');
 
 const { check } = require('express-validator');
@@ -24,6 +24,17 @@ router.get('/current',  async(req, res)=>{
     return res.json(cUser);
 
 });
+
+//Add an Image to a Review based on the Review's id
+
+//Create an Image for a Spot
+router.post('/:id/images', async (req, res) => {
+    const { url } = req.body;
+    const newReviewImage = await ReviewImage.create({ url });
+    res.status(201)
+     res.json({ newReviewImage });
+})
+
 
 
 
