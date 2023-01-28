@@ -27,7 +27,7 @@ router.get('/current',  async(req, res)=>{
 
 //Add an Image to a Review based on the Review's id
 
-//Create an Image for a Spot
+//Create an review for a Spot
 router.post('/:id/images', async (req, res) => {
     const { url } = req.body;
     const newReviewImage = await ReviewImage.create({ url });
@@ -35,6 +35,24 @@ router.post('/:id/images', async (req, res) => {
      res.json({ newReviewImage });
 })
 
+
+//Delete a review
+router.delete('/:id', async (req, res, next) => {
+    const reviews = await Review.findByPk(req.params.id);
+    
+    if (reviews) {
+        await reviews.destroy();
+        res.status(200)
+         res.json({ message: 'Successfully deleted' });
+    } else {
+        res.status(404)
+        res.json({ message: "Review  couldn't be found"
+        })
+    }
+});
+
+  module.exports = router;
+  
 
 
 

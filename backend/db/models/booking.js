@@ -1,3 +1,5 @@
+const moment = require('moment'); // require
+
 'use strict';
 const {
   Model
@@ -31,7 +33,9 @@ endDate: {
    validate: {
      isDate: true,
      startDateAfterEndDate() {
-        if (this.startDate.isAfter(this.endDate)) {
+       const startDay = new Date(this.startDate);
+       const endDay = new Date(this.endDate);
+        if (endDay < startDay) {
     	      throw new Error('Start date must be before the end date.');
         }
       }
