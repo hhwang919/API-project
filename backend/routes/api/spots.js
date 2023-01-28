@@ -128,7 +128,7 @@ router.put('/:id', async (req, res) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     const updateSpot = await Spot.findByPk(id);   
-    if(!updateSpot){ // findByPk is differ from findOne, findAll
+    if(!updateSpot){ 
         res.json({
             message: "Spot couldn't be found",
             statusCode: 404
@@ -371,6 +371,149 @@ router.get('/:id/bookings', async (req, res) => {
   
 });
 
+
+//Create a Booking Vased on a spotId
+
+
+router.post('/:bookId/bookings', async (req, res) => {
+    let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
+
+    const { bookId } = req.params;
+
+    const createBooking = await Booking.findByPk(bookId);   
+
+    if(!createBooking){ 
+        res.json({
+            message: "Booking couldn't be found",
+            statusCode: 404
+        })
+        res.status(404);
+        return ;
+    }
+
+    let startDay;
+    let endDay;
+
+    let { startDate, endDate } = req.body;
+
+
+    console.log("startDate: ", startDate);
+    console.log(typeof(startDate))
+    
+    console.log("startDate: ", startDate);
+    console.log(typeof(startDate))
+
+    if(startDate && startDate !== '') {
+        startDay = new Date(startDate);
+    }
+    else {
+        errorResult.message = "Validation error";
+        errorResult.statusCode = 400;    
+        errorResult.errors.push("Start Date is required");
+    }
+    
+    if (endDate && endDate !== '') {
+        endDay = new Date (endDate);
+    }
+    else {
+        errorResult.message = "Validation error";
+        errorResult.statusCode = 400;    
+        errorResult.errors.push("End Date is required");
+    }
+
+    if (startDay > endDay) {
+        errorResult.message = "Validation error";
+        errorResult.statusCode = 400;    
+        errorResult.errors.push("endDate cannot come before startDate");
+    }
+
+    let now = new Date();
+   
+    if(endDay < now) {
+        res.json({
+            message: "Past bookings can't be modified",
+            statusCode: 403
+        })
+        res.status(403);
+        return;
+    }
+
+    if(errorResult.errors.length) {
+        res.status(400);
+        res.json(errorResult);
+        return;
+    }
+
+    errorResult.message = "Sorry, this spot is already booked for the specified dates";
+    errorResult.statusCode = 403;
+
+    // Check Conflict
+    const bookingBySpot = await Booking.findAll({
+        where: {
+            spotId : createBooking.spotId
+        },
+        attributes: ['id', 'spotId', 'userId', 'startDate', 'endDate']
+    })
+
+    //console.log(bookingBySpot);
+     
+    for(const obj of bookingBySpot) {
+        console.log("obj: ", obj.startDate, obj.endDate);
+
+        if ( startDay > obj.startDate && endDay < obj.endDate){
+            errorResult.errors.push("Start date conflicts with an existing booking");
+            errorResult.errors.push("End date conflicts with an existing booking");
+            break;
+        }
+        else if ( startDay < obj.startDate && endDay > obj.endDate){
+            errorResult.errors.push("Start date conflicts with an existing booking");
+            errorResult.errors.push("End date conflicts with an existing booking");
+            break
+        }
+        else if (startDay > obj.startDate && startDay < obj.endDate) {
+            errorResult.errors.push("Start date conflicts with an existing booking");
+            break;
+        }
+        else if (endDay > obj.startDate && endDay < obj.endDate) {
+            errorResult.errors.push("End date conflicts with an existing booking");
+            break;
+        }
+    }
+
+    if(errorResult.errors.length) {
+        res.status(400);
+        res.json(errorResult);
+        return;
+    }
+ 
+    createBooking.startDate = startDay;
+    createBooking.endDate = endDay;
+    
+    
+    await createBooking.save();
+
+
+    res.status(200);
+    return res.json({ createBooking });
+
+})
+
+
+//Delete a Spot
+
+router.delete('/:id', async (req, res, next) => {
+    const spots = await Spot.findByPk(req.params.id);
+    
+    if (spots) {
+        await spots.destroy();
+        res.status(200)
+         res.json({ message: 'Successfully deleted' });
+    } else {
+        res.status(404)
+        res.json({ message: "Spot couldn't be found"
+        })
+    }
+});
 
 
 // router.get('/', async(req, res)=>{
