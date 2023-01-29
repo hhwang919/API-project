@@ -8,6 +8,7 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const spot = require('../../db/models/spot');
 const booking = require('../../db/models/booking');
+const { requireAuth } = require('../../utils/auth');
 
 
 
@@ -22,17 +23,13 @@ const validateSpot = [
 //get all spots
 router.get('/', async (req, res) => {
     const spot = await Spot.findAll({
-        group: ['Spot.id', 'SpotImages.url'],
+        group: ['Spot.id'],
         attributes: {
             include: [
                 [
                     sequelize.fn("AVG", sequelize.col("Reviews.stars")),
                     "avgRating"
                 ],
-                [
-                    sequelize.col("SpotImages.url"),
-                    "previewImage"
-                ]
             ]
         },
 
@@ -42,8 +39,9 @@ router.get('/', async (req, res) => {
                 attributes: [],
             },
             {
+                as: 'previewImage',
                 model: SpotImage,
-                attributes: []
+                attributes: ['url']
             }
         ]
     })
@@ -56,7 +54,7 @@ router.get('/', async (req, res) => {
 
 // Get all Spots owned by the Current User
 
-router.get('/current', async (req, res) => {
+router.get('/current', requireAuth, async (req, res) => {
     const userId = req.user.id
     // console.log(userId)
     const cUser = await Spot.findAll({ where: { ownerId: userId } });
@@ -92,6 +90,7 @@ router.get('/:id', async (req, res) => {
                 attributes: ['id', 'url', 'preview']
             },
             {
+                as: 'owner',
                 model: User,
                 attributes: ['id', 'firstName', 'lastName']
             }
@@ -105,7 +104,7 @@ router.get('/:id', async (req, res) => {
 
     return res.json({ spot })
 })
-//Create Spot
+//Create a Spot
 
 router.post('/', async (req, res) => {
 
@@ -113,6 +112,11 @@ router.post('/', async (req, res) => {
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     
+    if(!ownerId) {
+        errorResult.errors.push(" Need to login to create a spot")
+    }
+
+
     if(!address || address === '') {
         errorResult.errors.push("Street address is required");
     }
@@ -165,9 +169,9 @@ router.post('/', async (req, res) => {
         return;
     }
     
-    const createSpot = await Spot.create({ address, city, state, country, lat, lng, name, description, price  });
+    const createSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price  });
     res.status(201)
-    return res.json({ createSpot });
+    return res.json( createSpot );
 }
 );
 
@@ -181,8 +185,16 @@ router.put('/:id', async (req, res) => {
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
-    const updateSpot = await Spot.findByPk(id);   
-    if(!updateSpot){ // findByPk is differ from findOne, findAll
+    
+
+    // Check spot exist and belong to current user
+    const updateSpot = await Spot.findOne({
+        where: {
+            id: req.params.id,
+            ownerId: req.user.id
+        }
+    });  
+    if(!updateSpot){
         res.json({
             message: "Spot couldn't be found",
             statusCode: 404
@@ -276,10 +288,9 @@ router.put('/:id', async (req, res) => {
         return;
     }
 
-    // await updateSpot.save();   // comment if for test only
 
     res.status(201);
-    return res.json({updateSpot});
+    return res.json(updateSpot);
 })
 
 
@@ -389,10 +400,14 @@ router.get('/:id/reviews', async (req, res) => {
         ]
     });
     if (!review || review.length <= 0) {
-        res.status(400)
-        return res.json({ message: "Review couldn't be found" })
+        res.json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+        res.status(404);
+        return ;
     }
-    return res.json(review);
+    return res.json( { Reviews: review } );
 
 });
 
@@ -413,6 +428,7 @@ router.get('/:id/bookings', async (req, res) => {
                 attributes: ['ownerId'],
                 include: [
                     {
+                        as: 'Onwer',
                         model: User,
                         attributes: ['id', 'firstName', 'lastName']
                     }
@@ -421,6 +437,14 @@ router.get('/:id/bookings', async (req, res) => {
 
         ]
     });
+    if (!bookings || bookings.length <= 0) {
+        res.json({
+            message: "Spot Couldn't be found",
+            statusCode: 404
+        });
+        res.status(404);
+        return;
+    }
 
     const result = bookings.map((booking) => {
         if (booking.Spot.ownerId !== req.user.id) {

@@ -6,6 +6,7 @@ const review = require('../../db/models/review');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { requireAuth } = require('../../utils/auth');
 
 
 //Get All reviews
@@ -53,16 +54,21 @@ router.delete('/:id', async (req, res, next) => {
 });
 
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireAuth, async (req, res) => {
     let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
 
     const { id } = req.params;
 
     let { review, stars } = req.body;
 
-    const updateReview = await Review.findByPk(id);   
+    const updateReview = await Review.findByPk({
+        where:{
+            id: req.params.id,
+            userId: req.user.id
+        }
+    });   
 
-    if(!updateReview){ // findByPk is differ from findOne, findAll
+    if(!updateReview){
         res.json({
             message: "Review couldn't be found",
             statusCode: 404
@@ -97,7 +103,7 @@ router.put('/:id', async (req, res) => {
 
     //await updateReview.save();
 
-    res.json({ updateReview });
+    res.json( updateReview );
 
 })
 
