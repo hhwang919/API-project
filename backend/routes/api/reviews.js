@@ -36,6 +36,7 @@ router.post('/:id/images', async (req, res) => {
 })
 
 
+
 //Delete a review
 router.delete('/:id', async (req, res, next) => {
     const reviews = await Review.findByPk(req.params.id);
@@ -51,8 +52,54 @@ router.delete('/:id', async (req, res, next) => {
     }
 });
 
-  module.exports = router;
-  
+
+router.put('/:id', async (req, res) => {
+    let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
+
+    const { id } = req.params;
+
+    let { review, stars } = req.body;
+
+    const updateReview = await Review.findByPk(id);   
+
+    if(!updateReview){ // findByPk is differ from findOne, findAll
+        res.json({
+            message: "Review couldn't be found",
+            statusCode: 404
+        })
+        res.status(404);
+        return ;
+    }
+    
+    if(review && review !== '') {
+        updateReview.review = review;
+    }
+    else {
+        errorResult.errors.push("Review text is required");
+    }
+    
+ 
+    if (stars === 0) stars = -1;  // take care when starts is 0
+    if (stars) {
+        if ( !isNaN(stars) && stars >= 1 && stars <= 5 ) {
+            updateReview.stars = stars;
+        }
+        else {
+            errorResult.errors.push("Stars must be an integer from 1 to 5");
+        }
+    }
+
+    if(errorResult.errors.length) {
+        res.status(400);
+        res.json(errorResult);
+        return;
+    }
+
+    //await updateReview.save();
+
+    res.json({ updateReview });
+
+})
 
 
 

@@ -107,11 +107,65 @@ router.get('/:id', async (req, res) => {
 })
 //Create Spot
 
-router.post('/', validateSpot, async (req, res) => {
+router.post('/', async (req, res) => {
 
-    const { address, city, state, country, lat, lng, name } = req.body;
-    const createSpot = await Spot.create({ address, city, state, country, lat, lng, name });
+     let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
 
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    
+    if(!address || address === '') {
+        errorResult.errors.push("Street address is required");
+    }
+    
+    if(!city || city === '') {
+        errorResult.errors.push("City is required");
+    }
+    
+    if(!state || state === '') {
+        errorResult.errors.push("State is required");
+    }
+    
+    if(!country || country === '') {
+        errorResult.errors.push("Country is required");
+    }
+    
+    if(!lat || lat === '' || isNaN(lat)) {
+        errorResult.errors.push("Latitude is required");
+    }
+    else if(lat < -90 || lat > 90) {
+        errorResult.errors.push("Latitude is not valid");
+    }
+    
+    if(!lng || lng === '' || isNaN(lng)) {
+        errorResult.errors.push("Longitude is not valid");
+    }
+    else if(lng < -180 || lng > 180) {
+        errorResult.errors.push("Longitude is not valid");
+    }
+    
+    if(!name || name === '') {
+        errorResult.errors.push("Longitude is not valid");
+    }
+    else if(name.length > 50) {
+        errorResult.errors.push("Name must be less than 50 characters");
+    }
+    
+    if(!description || description === '') {
+        errorResult.errors.push("Description is required");
+    }
+    
+    
+    if(!price || price === '') {
+        errorResult.errors.push("Price per day is required");
+    }
+    
+    if(errorResult.errors.length) {
+        res.status(400);
+        res.json(errorResult);
+        return;
+    }
+    
+    const createSpot = await Spot.create({ address, city, state, country, lat, lng, name, description, price  });
     res.status(201)
     return res.json({ createSpot });
 }
@@ -128,7 +182,7 @@ router.put('/:id', async (req, res) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     const updateSpot = await Spot.findByPk(id);   
-    if(!updateSpot){ 
+    if(!updateSpot){ // findByPk is differ from findOne, findAll
         res.json({
             message: "Spot couldn't be found",
             statusCode: 404
@@ -136,35 +190,38 @@ router.put('/:id', async (req, res) => {
         res.status(404);
         return ;
     }
-    if(address) {
+    
+
+
+    if(address && address !== '') {
         updateSpot.address = address;
     }
     else {
         errorResult.errors.push("Street address is required");
     }
 
-    if(city) {
+    if(city && city !== '') {
         updateSpot.city = city;
     }
     else {
         errorResult.errors.push("City is required");
     }
 
-    if(state) {
+    if(state && state !== '') {
         updateSpot.state = state;
     }
     else {
         errorResult.errors.push("State is required");
     }
 
-    if(country) {
+    if(country && country !== '') {
         updateSpot.country = country;
     }
     else {
         errorResult.errors.push("Country is required");
     }
 
-    if(lat) {
+    if(lat && lat !== '' && !isNaN(lat)) {
         if( lat >= -90 && lat <= 90) {
             updateSpot.lat = lat;
         }
@@ -172,7 +229,12 @@ router.put('/:id', async (req, res) => {
             errorResult.errors.push("Latitude is not valid");
         }
     }
-    if(lng) {
+    else {
+        errorResult.errors.push("Latitude is required");
+
+    }
+
+    if(lng && lng !== '' && !isNaN(lng)) {
         if(lng >= -180 && lng <= 180) {
             updateSpot.lng = lng;
         }
@@ -180,8 +242,11 @@ router.put('/:id', async (req, res) => {
             errorResult.errors.push("Longitude is not valid");
         }
     }
+    else{
+        errorResult.errors.push("Longitude is required");      
+    }
 
-    if(name) {
+    if(name && name !== '') {
         if(name.length <= 50) {
             updateSpot.name = name;
         }
@@ -189,8 +254,16 @@ router.put('/:id', async (req, res) => {
             errorResult.errors.push("Name must be less than 50 characters");
         }
     }
+
+    if(description && description !== '') {
+        updateSpot.description = description;
+    }
+    else {
+        errorResult.errors.push("Description is required");
+    }
+
     
-    if(price) {
+    if(price && price !== '') {
         updateSpot.price = price;
     }
     else {
@@ -203,13 +276,12 @@ router.put('/:id', async (req, res) => {
         return;
     }
 
-    await updateSpot.save();   // comment if for test only
+    // await updateSpot.save();   // comment if for test only
 
-    res.json({
-        message: `Successfully upgrade spot with id ${id}.`,
-        Spot: updateSpot
-    });
+    res.status(201);
+    return res.json({updateSpot});
 })
+
 
 
 
@@ -363,7 +435,9 @@ router.get('/:id/bookings', async (req, res) => {
                 User: booking.User, 
                 id: booking.id,
                 spotId: booking.spotId,
-                userId: booking.userId
+                userId: booking.userId,
+                createdAt: booking.createdAt,
+                updatedAt: booking.updatedAt
             }
         }
     });
@@ -372,7 +446,7 @@ router.get('/:id/bookings', async (req, res) => {
 });
 
 
-//Create a Booking Vased on a spotId
+//Create a Booking Based on a spotId
 
 
 router.post('/:bookId/bookings', async (req, res) => {
