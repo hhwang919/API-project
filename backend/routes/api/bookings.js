@@ -169,7 +169,7 @@ router.delete('/:id', async (req, res, next) => {
     const now = new Date()
     let startDate;
     let endDate;
-    if(now > startDate && now < endDate){
+    if(now > bookings.startDate && now < bookings.endDate){
         res.status(404)
         res.json({message: "Bookings that have been started can't be deleted"})
 }

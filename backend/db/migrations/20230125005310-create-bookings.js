@@ -29,11 +29,11 @@ module.exports = {
         // references: { model: 'User' },
       },
       startDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
 
       },
       endDate: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         // validate:
       },
       createdAt: {
