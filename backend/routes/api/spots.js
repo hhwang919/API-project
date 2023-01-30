@@ -147,7 +147,7 @@ router.get('/current', requireAuth, async (req, res) => {
 // Get details of a Spot from an id
 router.get('/:id', async (req, res) => {
     const spot = await Spot.findByPk(req.params.id, {
-        group: ['Spot.id', 'previewImage.id'],
+        group: ['Spot.id', 'previewImage.id','Owner.id'],
         attributes: {
             include: [
                 [
@@ -389,7 +389,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
     const { spotId } = req.params;
 
-    const updateSpot = await Spot.findByPk(req.params.id);
+    const updateSpot = await Spot.findByPk(spotId);
 
     // Check spot exist
     if (!updateSpot) {
