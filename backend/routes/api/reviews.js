@@ -18,23 +18,100 @@ router.get('/', async(req, res)=>{
 
 
 //Get all reviews by current user 
-router.get('/current',  async(req, res)=>{
+router.get('/current', requireAuth, async(req, res)=>{
     const userId = req.user.id
     // console.log(userId)
-    const cUser  = await Review.findAll({where:{userId:userId}});
-    return res.json(cUser);
+    const cUser  = await Review.findAll({
+        where: {
+            userId: userId
+        },
+        include: [
+            {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: Spot,
+                attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price'],
+                include: [
+                    {
+                        as: 'previewImage',
+                        model: SpotImage,
+                        attributes: ['url']
+                    }
+                ]
+            },
+            {
+                model: ReviewImage,
+                attributes: ['id', 'url']
+            }
+        ]
+  
+    });
+    return res.json( { Reviews: cUser });
 
 });
 
-//Add an Image to a Review based on the Review's id
+// Add an Image to a Review based on the Review's id
+router.post('/:reviewId/images', requireAuth, async (req, res) => {
+    const { reviewId } = req.params;
 
-//Create an review for a Spot
-router.post('/:id/images', async (req, res) => {
+    const review = await Review.findByPk(reviewId);   
+
+    // Check Review exist
+    if(!review){ 
+        res.json({
+            message: "Review couldn't be found",
+            statusCode: 404
+        })
+        res.status(404);
+        return ;
+    }   
+    
+    // Check Booking belong to user
+    if(review.userId !== req.user.id){
+        res.json({
+            message: "Forbidden",
+            statusCode: 403
+        })
+        res.status(403);
+        return ;
+    }
+
     const { url } = req.body;
-    const newReviewImage = await ReviewImage.create({ url });
-    res.status(201)
-     res.json({ newReviewImage });
-})
+    //console.log(url)
+
+    if (!url || url === '') {
+        res.json({
+            message: "url is required",
+            statusCode: 404
+        })
+        res.status(404);
+        return ;
+    }
+
+    const countImage = await ReviewImage.count({ where: { reviewId: reviewId }});
+
+    console.log("count Image: ", countImage)
+
+    if (countImage >= 10) {
+        res.json ({
+            "message": "Maximum number of images for this resource was reached",
+            "statusCode": 403
+        })
+        res.status(403);
+        return;
+    }
+
+ 
+    const newReviewImage = await ReviewImage.create ({
+        reviewId: reviewId,
+        url: url
+    })
+
+    res.status(200);
+    return res.json(newReviewImage); 
+});
 
 
 
@@ -53,7 +130,7 @@ router.delete('/:id', async (req, res, next) => {
     }
 });
 
-
+//Edit a review
 router.put('/:id', requireAuth, async (req, res) => {
     let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
 
