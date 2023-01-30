@@ -8,7 +8,6 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 
-const moment = require('moment'); // require
 
 //Get All bookings for testing
 router.get('/', async(req, res)=>{
@@ -17,7 +16,6 @@ router.get('/', async(req, res)=>{
 })
 
 
-//Get all of the Current User's Bookings
 //Get all of the Current User's Bookings
 router.get('/current', requireAuth, async(req, res)=>{
     const userId = req.user.id
@@ -60,6 +58,15 @@ router.get('/current', requireAuth, async(req, res)=>{
 
 });
 
+// router.get('/current',  async(req, res)=>{
+//     const userId = req.user.id
+//     // console.log(userId)
+//     const cUser  = await Review.findAll({where:{userId:userId}});
+//     return res.json(cUser);
+
+// });
+
+
 // ### Edit a Booking
 // Update and return an existing booking.
 
@@ -68,16 +75,9 @@ router.put('/:bookId', requireAuth, async (req, res) => {
 
     const { bookId } = req.params;
 
-    //const updateBooking = await Booking.findByPk(bookId);   
+    const updateBooking = await Booking.findByPk(bookId);   
 
-    const updateBooking = await Booking.findOne({
-        where: {
-            id: bookId,
-            userId: req.user.id
-        }
-    });
-
-
+    // Check Booking exist
     if(!updateBooking){ 
         res.json({
             message: "Booking couldn't be found",
@@ -85,8 +85,9 @@ router.put('/:bookId', requireAuth, async (req, res) => {
         })
         res.status(404);
         return ;
-    }
-
+    }   
+    
+    // Check Booking belong to user
     if(updateBooking.userId !== req.user.id){
         res.json({
             message: "Forbidden",
@@ -95,18 +96,6 @@ router.put('/:bookId', requireAuth, async (req, res) => {
         res.status(403);
         return ;
     }
-
-    console.log("userId: ", updateBooking.userId);
-    console.log("current user Id: ", req.user.id);
-    if(updateBooking.userId !== req.user.id) { // if booking not belong current user
-        res.json({
-            message: "Booking doesn't belong to current user",
-            statusCode: 404
-        })
-        res.status(404);
-        return ;
-    }
-
 
     let startDay;
     let endDay;
@@ -122,23 +111,17 @@ router.put('/:bookId', requireAuth, async (req, res) => {
         startDay = new Date(startDate);
     }
     else {
-        // Delete : errorResult.message = "Validation error";
-        //Delete :errorResult.statusCode = 400;    
-        errorResult.errors.push("Start Date is required");
+         errorResult.errors.push("Start Date is required");
     }
     
     if (endDate && endDate !== '') {
         endDay = new Date (endDate);
     }
     else {
-        //Delete :errorResult.message = "Validation error";
-        //Delete :errorResult.statusCode = 400;    
         errorResult.errors.push("End Date is required");
     }
 
     if (startDay > endDay) {
-        //Delete :errorResult.message = "Validation error";
-        //Delete :errorResult.statusCode = 400;    
         errorResult.errors.push("endDate cannot come before startDate");
     }
 
@@ -161,9 +144,7 @@ router.put('/:bookId', requireAuth, async (req, res) => {
         return;
     }
 
-    // Delete : errorResult.message = "Sorry, this spot is already booked for the specified dates";
-    // Delete: errorResult.statusCode = 403;
-
+    
     // Check Conflict
     const bookingBySpot = await Booking.findAll({
         where: {
@@ -172,30 +153,29 @@ router.put('/:bookId', requireAuth, async (req, res) => {
         attributes: ['id', 'spotId', 'userId', 'startDate', 'endDate']
     })
 
-    //console.log(bookingBySpot);
-     
+      
     for(const obj of bookingBySpot) {
         //console.log("obj: ", obj.id, obj.spotId, obj.startDate, obj.endDate, typeof(obj.startDate));
         if (obj.id === bookId) { continue }
 
-        let noStartDay = new Date(obj.startDate) 
-        let noEndDay = new Date(obj.endDate) 
+        let bookedStartDay = new Date(obj.startDate) 
+        let bookedEndDay = new Date(obj.endDate) 
 
-        if ( startDay >= noStartDay && endDay <= noEndDay){
+        if ( startDay >= bookedStartDay && endDay <= bookedEndDay){
             errorResult.errors.push("Start date conflicts with an existing booking");
             errorResult.errors.push("End date conflicts with an existing booking");
             break;
         }
-        else if ( startDay <= noStartDay && endDay >= noEndDay){
+        else if ( startDay < bookedStartDay && endDay > bookedEndDay){
             errorResult.errors.push("Start date conflicts with an existing booking");
             errorResult.errors.push("End date conflicts with an existing booking");
             break
         }
-        else if (startDay >= noStartDay && startDay <= noEndDay) {
+        else if (startDay > bookedStartDay && startDay < bookedEndDay) {
             errorResult.errors.push("Start date conflicts with an existing booking");
             break;
         }
-        else if (endDay >= noStartDay && endDay <= noEndDay) {
+        else if (endDay > bookedStartDay && endDay < bookedEndDay) {
             errorResult.errors.push("End date conflicts with an existing booking");
             break;
         }
@@ -209,38 +189,33 @@ router.put('/:bookId', requireAuth, async (req, res) => {
         return;
     }
  
-    updateBooking.startDate = startDate;    // this is string, don't use startDay
-    updateBooking.endDate = endDate;        // this is string, don't use endDay
+    updateBooking.startDate = startDate;   
+    updateBooking.endDate = endDate;       
     
     
-    //await updateBooking.save();   comment while test
+    await updateBooking.save();   
 
     res.status(200);
     return res.json( updateBooking );
 })
 
 
-
 // ### Delete a Booking
-router.delete('/:id',requireAuth, async (req, res, next) => {
-    const deleteBooking = await Booking.findOne({
-        where: {
-            id: req.params.id,
-            userId: req.user.id
-        }
-    });
+router.delete('/:id', requireAuth, async (req, res, next) => {
+    const deleteBooking = await Booking.findByPk(req.params.id);   
 
-    // user 1 has booking.id: 12, 15, 21
-    if(!deleteBooking) {
+    // Check Booking exist
+    if(!deleteBooking){ 
         res.json({
-            message: "Booking Couldn't be found",
+            message: "Booking couldn't be found",
             statusCode: 404
-        });
+        })
         res.status(404);
-        return;
-    }
-
-    if(updateBooking.userId !== req.user.id){
+        return ;
+    }   
+    
+    // Check Booking belong to user
+    if(deleteBooking.userId !== req.user.id){
         res.json({
             message: "Forbidden",
             statusCode: 403
@@ -249,11 +224,12 @@ router.delete('/:id',requireAuth, async (req, res, next) => {
         return ;
     }
 
+
     //console.log(deleteBooking.startDate);
     const now = new Date();
     const startDay = new Date(deleteBooking.startDate);
 
-    if (now >= startDay) { // Booking start day  before today
+    if (now >= startDay) {
         res.json({
             message: "Bookings that have been started can't be deleted",
             statusCode: 403
@@ -262,7 +238,7 @@ router.delete('/:id',requireAuth, async (req, res, next) => {
         return;
     }
 
-    await deleteBooking.destroy();   //comment while test
+    await deleteBooking.destroy();  
 
     res.json({
         message: "Successfully deleted",
@@ -273,14 +249,5 @@ router.delete('/:id',requireAuth, async (req, res, next) => {
 
 })
 
-
-
-// router.get('/current',  async(req, res)=>{
-//     const userId = req.user.id
-//     // console.log(userId)
-//     const cUser  = await Review.findAll({where:{userId:userId}});
-//     return res.json(cUser);
-
-// });
 
 module.exports = router
