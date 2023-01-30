@@ -144,7 +144,7 @@ router.get('/:id', async (req, res) => {
                 attributes: ['url']
             },
             {
-                as: 'owner',
+                as: 'Owner',
                 model: User,
                 attributes: ['id', 'firstName', 'lastName']
             }
@@ -491,7 +491,7 @@ router.get('/:id/bookings', async (req, res) => {
                 attributes: ['ownerId'],
                 include: [
                     {
-                        as: 'Onwer',
+                        as: 'Owner',
                         model: User,
                         attributes: ['id', 'firstName', 'lastName']
                     }

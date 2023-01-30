@@ -181,21 +181,21 @@ router.put('/:bookId', requireAuth, async (req, res) => {
         let noStartDay = new Date(obj.startDate) 
         let noEndDay = new Date(obj.endDate) 
 
-        if ( startDay > noStartDay && endDay < noEndDay){
+        if ( startDay >= noStartDay && endDay <= noEndDay){
             errorResult.errors.push("Start date conflicts with an existing booking");
             errorResult.errors.push("End date conflicts with an existing booking");
             break;
         }
-        else if ( startDay < noStartDay && endDay > noEndDay){
+        else if ( startDay <= noStartDay && endDay >= noEndDay){
             errorResult.errors.push("Start date conflicts with an existing booking");
             errorResult.errors.push("End date conflicts with an existing booking");
             break
         }
-        else if (startDay > noStartDay && startDay < noEndDay) {
+        else if (startDay >= noStartDay && startDay <= noEndDay) {
             errorResult.errors.push("Start date conflicts with an existing booking");
             break;
         }
-        else if (endDay > noStartDay && endDay < noEndDay) {
+        else if (endDay >= noStartDay && endDay <= noEndDay) {
             errorResult.errors.push("End date conflicts with an existing booking");
             break;
         }

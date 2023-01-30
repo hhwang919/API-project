@@ -1,5 +1,5 @@
 'use strict';
-const { faker } = require("@faker-js/faker");
+//const { faker } = require("@faker-js/faker");
 // const { User } = require('../models');
 
 let options = {};
@@ -8,12 +8,37 @@ if (process.env.NODE_ENV === 'production') {
 }
 options.tableName = "ReviewImages";
 
-const reviewImages = [...Array(20)].map((reviewImage) => (
-  {
-    reviewId: faker.datatype.number({'min': 1, 'max': 20 }),
-    url: faker.internet.url()
-  }
-))
+//const reviewImages = [...Array(20)].map((reviewImage) => (
+  //{
+    //reviewId: faker.datatype.number({'min': 1, 'max': 20 }),
+    //url: faker.internet.url()
+  //}
+//))
+
+const reviewImages = [
+  { reviewId: 1, url: 'https://distant-camp.org' },
+  { reviewId: 13, url: 'http://dependable-fondue.com' },
+  { reviewId: 12, url: 'https://expert-tea.net' },
+  { reviewId: 20, url: 'http://elderly-ranger.info' },
+  { reviewId: 10, url: 'https://ideal-evocation.info' },
+  { reviewId: 2, url: 'https://lawful-toilet.com' },
+  { reviewId: 6, url: 'https://nervous-hovercraft.name' },
+  { reviewId: 7, url: 'https://subtle-hassock.name' },
+  { reviewId: 12, url: 'https://identical-influx.info' },
+  { reviewId: 18, url: 'http://willing-jewel.name' },
+  { reviewId: 10, url: 'http://unruly-shed.org' },
+  { reviewId: 14, url: 'https://constant-fax.org' },
+  { reviewId: 11, url: 'https://spiffy-garb.com' },
+  { reviewId: 17, url: 'https://playful-keeper.net' },
+  { reviewId: 17, url: 'https://pointed-scene.biz' },
+  { reviewId: 14, url: 'https://old-priesthood.name' },
+  { reviewId: 18, url: 'http://frequent-ship.com' },
+  { reviewId: 5, url: 'https://grimy-timeout.net' },
+  { reviewId: 8, url: 'https://imperfect-abbey.com' },
+  { reviewId: 10, url: 'https://paltry-fur.biz' }
+];
+
+//console.log(reviewImages);
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
