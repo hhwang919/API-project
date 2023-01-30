@@ -72,7 +72,7 @@ router.get('/', async (req, res) => {
     console.log(pagination.limit, pagination.offset);
 
     const spot = await Spot.findAll({
-        group: ['Spot.id'],
+        group: ['Spot.id','previewImage.id'],
         attributes: {
             include: [
                 [
@@ -357,11 +357,70 @@ router.put('/:id', async (req, res) => {
 
 
 //Create an Image for a Spot
-router.post('/:id/images', async (req, res) => {
+router.post('/:spotId/images', requireAuth, async (req, res) => {
+    let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
+    const { spotId } = req.params;
+
+    const updateSpot = await Spot.findByPk(req.params.id);  
+ 
+    // Check spot exist
+    if(!updateSpot){
+        res.json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+        res.status(404);
+        return ;
+    }
+    
+    // Check spot belong to usert
+    if(updateSpot.ownerId !== req.user.id){
+        res.json({
+            message: "Forbidden",
+            statusCode: 403
+        })
+        res.status(403);
+        return ;
+    }
+   
+    // Check spot exist and belong to current user
+    const spot = await Spot.findOne({
+        where: {
+            id: spotId,
+            ownerId: req.user.id
+        }
+    });   
+
+    if(!spot){
+        res.json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+        res.status(404);
+        return ;
+    }
+
     const { url, preview } = req.body;
+
+    if (!url || url === '') {
+        errorResult.errors.push("url is required");
+    }
+
+    if (!preview || preview === '') {
+        errorResult.errors.push("preview is required");
+    }
+
+    if(errorResult.errors.length) {
+        res.status(400);
+        res.json(errorResult);
+        return;
+    }
+
+    console.log(url, preview)
     const newImage = await SpotImage.create({ url, preview });
-    res.status(201)
-    return res.json({ newImage });
+
+    res.status(200)
+    return res.json( newImage );
 })
 
 
