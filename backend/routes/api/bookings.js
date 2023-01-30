@@ -78,12 +78,21 @@ router.put('/:bookId', requireAuth, async (req, res) => {
     });
 
 
-    if(!updateBooking){ // findByPk is differ from findOne, findAll
+    if(!updateBooking){ 
         res.json({
             message: "Booking couldn't be found",
             statusCode: 404
         })
         res.status(404);
+        return ;
+    }
+
+    if(updateBooking.userId !== req.user.id){
+        res.json({
+            message: "Forbidden",
+            statusCode: 403
+        })
+        res.status(403);
         return ;
     }
 
@@ -229,6 +238,15 @@ router.delete('/:id',requireAuth, async (req, res, next) => {
         });
         res.status(404);
         return;
+    }
+
+    if(updateBooking.userId !== req.user.id){
+        res.json({
+            message: "Forbidden",
+            statusCode: 403
+        })
+        res.status(403);
+        return ;
     }
 
     //console.log(deleteBooking.startDate);
