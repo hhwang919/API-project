@@ -68,7 +68,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
         return ;
     }   
     
-    // Check Booking belong to user
+    // Check review belong to user
     if(review.userId !== req.user.id){
         res.json({
             message: "Forbidden",
@@ -115,9 +115,30 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
 
 
 
-//Delete a review
+// Delete a review
 router.delete('/:id', async (req, res, next) => {
-    const reviews = await Review.findByPk(req.params.id);
+    const reviews = await Review.findByPk(req.params.id);   
+
+    // Check Review exist
+    if(!reviews){ 
+        res.json({
+            message: "Review couldn't be found",
+            statusCode: 404
+        })
+        res.status(404);
+        return ;
+    }   
+    
+    // Check Booking belong to user
+    if(reviews.userId !== req.user.id){
+        res.json({
+            message: "Forbidden",
+            statusCode: 403
+        })
+        res.status(403);
+        return ;
+    }
+
     
     if (reviews) {
         await reviews.destroy();
@@ -130,21 +151,18 @@ router.delete('/:id', async (req, res, next) => {
     }
 });
 
-//Edit a review
+// ### Edit a Review
+// Update and return an existing review.
+// Review must belong to current user
+
 router.put('/:id', requireAuth, async (req, res) => {
     let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
-
-    const { id } = req.params;
-
+ 
     let { review, stars } = req.body;
 
-    const updateReview = await Review.findByPk({
-        where:{
-            id: req.params.id,
-            userId: req.user.id
-        }
-    });   
-
+    const updateReview = await Review.findByPk(req.params.id);  
+ 
+    // Check Review exist
     if(!updateReview){
         res.json({
             message: "Review couldn't be found",
@@ -154,6 +172,16 @@ router.put('/:id', requireAuth, async (req, res) => {
         return ;
     }
     
+    // Check Review belong to user
+    if(updateReview.userId !== req.user.id){
+        res.json({
+            message: "Forbidden",
+            statusCode: 403
+        })
+        res.status(403);
+        return ;
+    }
+
     if(review && review !== '') {
         updateReview.review = review;
     }
@@ -161,8 +189,8 @@ router.put('/:id', requireAuth, async (req, res) => {
         errorResult.errors.push("Review text is required");
     }
     
- 
-    if (stars === 0) stars = -1;  // take care when starts is 0
+ // takes care of when stars are 0
+    if (stars === 0) stars = -1;  
     if (stars) {
         if ( !isNaN(stars) && stars >= 1 && stars <= 5 ) {
             updateReview.stars = stars;
@@ -178,11 +206,11 @@ router.put('/:id', requireAuth, async (req, res) => {
         return;
     }
 
-    //await updateReview.save();
+    await updateReview.save();
 
     res.json( updateReview );
 
-})
+});
 
 
 
