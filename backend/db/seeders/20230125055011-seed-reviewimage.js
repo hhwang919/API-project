@@ -8,12 +8,13 @@ if (process.env.NODE_ENV === 'production') {
 }
 options.tableName = "ReviewImages";
 
-//const reviewImages = [...Array(20)].map((reviewImage) => (
+//const reviewImages = [...Array(30)].map((reviewImage) => (
   //{
     //reviewId: faker.datatype.number({'min': 1, 'max': 20 }),
     //url: faker.internet.url()
   //}
 //))
+// Add 10 to make 30 so every revie hase image
 
 const reviewImages = [
   { reviewId: 1, url: 'https://distant-camp.org' },
@@ -35,7 +36,17 @@ const reviewImages = [
   { reviewId: 18, url: 'http://frequent-ship.com' },
   { reviewId: 5, url: 'https://grimy-timeout.net' },
   { reviewId: 8, url: 'https://imperfect-abbey.com' },
-  { reviewId: 10, url: 'https://paltry-fur.biz' }
+  { reviewId: 10, url: 'https://paltry-fur.biz' },
+  { reviewId: 5, url: 'https://dimwitted-present.net'},
+  { reviewId: 10, url: 'https://total-sardine.net'},
+  { reviewId: 9, url: 'https://secret-engineering.info'},
+  { reviewId: 3, url: 'http://costly-carnation.org'},
+  { reviewId: 15, url: 'https://valuable-corporal.net'},
+  { reviewId: 3, url: 'http://mushy-trapdoor.net'},
+  { reviewId: 16, url: 'http://general-antler.net'},
+  { reviewId: 1, url: 'http://dependable-scarf.name'},
+  { reviewId: 4, url: 'http://mortified-terrarium.info'},
+  { reviewId: 19, url: 'http://lively-blouse.com'}
 ];
 
 //console.log(reviewImages);

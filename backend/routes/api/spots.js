@@ -73,32 +73,55 @@ router.get('/', async (req, res) => {
  
     console.log(pagination.limit, pagination.offset);
 
-    const spot = await Spot.findAll({
-        group: ['Spot.id', 'previewImage.id'],
+    const spots = await Spot.findAll({
         attributes: {
             include: [
-                [
-                    sequelize.fn("AVG", sequelize.col("Reviews.stars")),
-                    "avgRating"
-                ]
+                [sequelize.literal(`COALESCE((
+                SELECT AVG(stars)
+                FROM Reviews
+                WHERE Reviews.spotId = Spot.id
+                ), '')`), 'avgRating'
+            ],
+            [sequelize.literal(`COALESCE((
+                SELECT url
+                FROM SpotImages
+                WHERE SpotImages.spotId = Spot.id 
+                AND SpotImages.preview = true
+                ORDER BY SpotImages.id ASC
+                LIMIT 1 
+                ), '')`), 'previewImage'
             ]
-        },
-        include: [
-            {
-                model: Review,
-                attributes: [],
-            },
-            {
-                as: 'previewImage',
-                model: SpotImage,
-                attributes: ['url']
-            }
-        ],
-        pagination: pagination
-    })
+        ]
+    },
+        ...pagination
+    });
 
+    // const spot = await Spot.findAll({
+    //     group: ['Spot.id', 'previewImage.id'],
+    //     attributes: {
+    //         include: [
+    //             [
+    //                 sequelize.fn("AVG", sequelize.col("Reviews.stars")),
+    //                 "avgRating"
+    //             ]
+    //         ]
+    //     },
+    //     include: [
+    //         {
+    //             model: Review,
+    //             attributes: [],
+    //         },
+    //         {
+    //             as: 'previewImage',
+    //             model: SpotImage,
+    //             attributes: ['url']
+    //         }
+    //     ],
+    //     pagination: pagination
+    // })
+res.status(200)
     return res.json({ 
-        Spots: spot,
+        Spots: spots,
         page,
         size 
     });
@@ -114,29 +137,55 @@ router.get('/current', requireAuth, async (req, res) => {
     const userId = req.user.id
 
     // console.log(userId)
+    // const cUser = await Spot.findAll({ 
+    //     where: { ownerId: userId },
+    //     group: ['Spot.id', 'previewImage.id'],
+    //     attributes: {
+    //         include: [
+    //             [
+    //                 sequelize.fn("AVG", sequelize.col("Reviews.stars")),
+    //                 "avgRating"
+    //             ]
+    //         ]
+    //     },
+    //     include: [
+    //         {
+    //             model: Review,
+    //             attributes: [],
+    //         },
+    //         {
+    //             as: 'previewImage',
+    //             model: SpotImage,
+    //             attributes: ['url'],
+    //             where: {preview:true},
+    //         }
+    //     ]
+    // })
+
     const cUser = await Spot.findAll({ 
         where: { ownerId: userId },
-        group: ['Spot.id', 'previewImage.id'],
         attributes: {
             include: [
-                [
-                    sequelize.fn("AVG", sequelize.col("Reviews.stars")),
-                    "avgRating"
+                [sequelize.literal(`COALESCE((
+                    SELECT AVG(stars)
+                    FROM Reviews
+                    WHERE Reviews.spotId = Spot.id
+                    ), 0)`), 'avgRating'
+                ],
+                [sequelize.literal(`COALESCE((
+                    SELECT url
+                    FROM SpotImages
+                    WHERE SpotImages.spotId = Spot.id
+                    AND SpotImages.preview = true
+                    ORDER BY SpotImages.id ASC
+                    LIMIT 1 
+                    ), '')`), 'previewImage'
                 ]
             ]
         },
-        include: [
-            {
-                model: Review,
-                attributes: [],
-            },
-            {
-                as: 'previewImage',
-                model: SpotImage,
-                attributes: ['url']
-            }
-        ]
-    })
+    });
+
+    res.status
  
     return res.json( { Spots: cUser } );
 
@@ -178,7 +227,7 @@ router.get('/:id', async (req, res) => {
             }
         ]
     })
-    if (!spot.id && spot.id === null) {
+    if (!spot && spot === null) {
         res.status(404);
         return res.json({ message: "Spot couldn't be found" })
     }
@@ -401,7 +450,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
         return;
     }
 
-    // Check spot belong to usert
+    // Check spot belong to user
     if (updateSpot.ownerId !== req.user.id) {
         res.json({
             message: "Forbidden",
@@ -445,7 +494,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     }
 
     console.log(url, preview)
-    const newImage = await SpotImage.create({ url, preview });
+    const newImage = await SpotImage.create({ url, preview, spotId });
 
     res.status(200)
     return res.json(newImage);

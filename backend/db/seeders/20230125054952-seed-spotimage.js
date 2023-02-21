@@ -8,36 +8,39 @@ if (process.env.NODE_ENV === 'production') {
 }
 options.tableName = "SpotImages";
 
-//const spotImages = [...Array(20)].map((SpotImage) => (
+//const spotImages = [...Array(30)].map((SpotImage) => (
 //  {
 //    spotId: faker.datatype.number({'min': 1, 'max': 20 }),
 //    url: faker.internet.url(),
 //    preview: faker.datatype.boolean()
 //  }
 //))
+// KEEP 20 spotImages EVERY SPOT HAS IMAGE-- two digit spotId -10 to one digit
+// id = 7 spotid= 1 -> 10  id = 14 spottid 7 -> 4  id = 1 spotid 7 -> 1 id = 2 spotid 1 -> 8
 
 const spotImages = [
-  { spotId: 17, url: 'https://fancy-icy.com', preview: true },
-  { spotId: 1, url: 'https://ultimate-accent.info', preview: false },
-  { spotId: 17, url: 'http://personal-corporation.org', preview: true },
-  { spotId: 17, url: 'http://wide-eyed-hyphenation.info', preview: false},
-  { spotId: 11, url: 'http://kind-journal.biz', preview: true },
-  { spotId: 15, url: 'https://unrealistic-affidavit.org', preview: true},
-  { spotId: 11, url: 'http://voluminous-characterization.com', preview: false},
+  { spotId: 1, url: 'https://fancy-icy.com', preview: true },
+  { spotId: 8, url: 'https://ultimate-accent.info', preview: true },
+  { spotId: 7, url: 'http://personal-corporation.org', preview: true },
+  { spotId: 7, url: 'http://wide-eyed-hyphenation.info', preview: false},
+  { spotId: 1, url: 'http://kind-journal.biz', preview: false },
+  { spotId: 5, url: 'https://unrealistic-affidavit.org', preview: true},
+  { spotId: 10, url: 'http://voluminous-characterization.com', preview: true},
   { spotId: 7, url: 'https://third-gene.name', preview: false },
-  { spotId: 13, url: 'http://entire-river.info', preview: false },
-  { spotId: 12, url: 'https://large-grouper.info', preview: true },
+  { spotId: 3, url: 'http://entire-river.info', preview: true },
+  { spotId: 2, url: 'https://large-grouper.info', preview: true },
   { spotId: 5, url: 'http://unknown-kamikaze.org', preview: false },
-  { spotId: 1, url: 'https://adolescent-fen.biz', preview: true },
-  { spotId: 13, url: 'http://spry-swing.com', preview: true },
-  { spotId: 7, url: 'https://dramatic-semantics.name', preview: false },
-  { spotId: 13, url: 'http://electric-manacle.org', preview: true },
-  { spotId: 19, url: 'http://lavish-lunge.com', preview: false },
-  { spotId: 16, url: 'http://nervous-editor.org', preview: true },
-  { spotId: 19, url: 'http://bare-consulate.name', preview: true },
+  { spotId: 1, url: 'https://adolescent-fen.biz', preview: false },
+  { spotId: 3, url: 'http://spry-swing.com', preview: false },
+  { spotId: 4, url: 'https://dramatic-semantics.name', preview: true },
+  { spotId: 3, url: 'http://electric-manacle.org', preview: false },
+  { spotId: 9, url: 'http://lavish-lunge.com', preview: true },
+  { spotId: 6, url: 'http://nervous-editor.org', preview: true },
+  { spotId: 9, url: 'http://bare-consulate.name', preview: false },
   { spotId: 5, url: 'http://dependent-discourse.com', preview: false },
   { spotId: 6, url: 'http://organic-sanction.info', preview: false }
 ]
+
 
 //console.log(spotImages)
 
