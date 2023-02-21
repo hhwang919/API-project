@@ -29,7 +29,7 @@ options.tableName = "Bookings";
 
 const bookings =[
   {
-    spotId: 19,
+    spotId: 2,
     userId: 8,
     startDate: '2023-05-21',
     endDate: '2023-07-03'
@@ -41,16 +41,16 @@ const bookings =[
     endDate: '2023-10-01'
   },
   {
-    spotId: 19,
-    userId: 10,
+    spotId: 9,
+    userId: 1,
     startDate: '2023-05-09',
     endDate: '2023-07-18'
   },
   {
     spotId: 6,
-    userId: 10,
+    userId: 2,
     startDate: '2023-02-01',
-    endDate: '2023-10-11'
+    endDate: '2023-05-11'
   },
   {
     spotId: 9,
@@ -59,16 +59,16 @@ const bookings =[
     endDate: '2023-05-13'
   },
   {
-    spotId: 15,
+    spotId: 5,
     userId: 7,
     startDate: '2023-06-18',
-    endDate: '2023-12-19'
+    endDate: '2023-10-19'
   },
   {
     spotId: 8,
     userId: 8,
     startDate: '2023-05-31',
-    endDate: '2023-12-02'
+    endDate: '2023-08-02'
   },
   {
     spotId: 1,
@@ -83,7 +83,7 @@ const bookings =[
     endDate: '2023-07-03'
   },
   {
-    spotId: 12,
+    spotId: 2,
     userId: 6,
     startDate: '2023-09-22',
     endDate: '2023-12-20'
@@ -101,31 +101,31 @@ const bookings =[
     endDate: '2023-05-29'
   },
   {
-    spotId: 20,
+    spotId: 10,
     userId: 5,
     startDate: '2023-03-01',
     endDate: '2023-09-12'
   },
   {
     spotId: 8,
-    userId: 8,
+    userId: 9,
     startDate: '2023-09-27',
     endDate: '2023-12-24'
   },
   {
-    spotId: 14,
+    spotId: 4,
     userId: 4,
     startDate: '2023-08-11',
     endDate: '2023-12-07'
   },
   {
-    spotId: 14,
+    spotId: 1,
     userId: 3,
     startDate: '2023-02-06',
     endDate: '2023-04-06'
   },
   {
-    spotId: 16,
+    spotId: 10,
     userId: 8,
     startDate: '2023-10-25',
     endDate: '2024-02-13'
@@ -133,13 +133,13 @@ const bookings =[
   {
     spotId: 6,
     userId: 7,
-    startDate: '2023-05-24',
+    startDate: '2023-09-24',
     endDate: '2023-12-03'
   },
   {
     spotId: 9,
-    userId: 9,
-    startDate: '2023-05-04',
+    userId: 8,
+    startDate: '2023-10-04',
     endDate: '2024-01-24'
   },
   {

@@ -17,125 +17,129 @@ options.tableName = "Reviews";
   //}
 //))
 
+// KEEP 20 spotImages EVERY SPOT HAS IMAGE-- two digit spotId -10 to one digit
+// id = 5 spotid= 8 -> 10  id =  spottid  ->   id =  spotid  ->  id =  spotid  -> 
+
+
 const reviews = [
   {
-    spotId: 19,
+    spotId: 6,
     userId: 1,
-    review: 'Aspernatur nobis aliquam debitis dignissimos sit illum harum laboriosam. Rem dolores accusamus beatae velit voluptatem labore iste. Beatae qui dolorem minus eos quae eum quis. Ipsam repellendus quis officiis ut quos. Ratione quibusdam voluptatem placeat molestiae.',
+    review: 'When we first stumbled upon this flat on AirBnB, it seemed almost too good to be true. There must be a catch! But everything was as perfect as it seemed online.',
     stars: 2
   },
   {
     spotId: 7,
     userId: 6,
-    review: 'Maiores labore fugit eveniet inventore ipsam non reprehenderit magnam beatae. Ab corporis magni dolorem consectetur enim. Alias a laboriosam facere. Quos hic provident maiores quisquam minus soluta assumenda culpa.',
+    review: 'Very tidy and lovely AirBnb apartment equipped with everything you need. A good bed and nice bathroom. App Academy is a great host and there when you need him, Very nice and wants to share all hé know about the area. We had a great stay.',
     stars: 1
   },
   {
     spotId: 1,
     userId: 6,
-    review: 'Repellendus at eum natus laudantium. Assumenda sunt explicabo maxime corporis officia itaque explicabo veniam amet. Ducimus porro eveniet quas. Delectus distinctio illo perspiciatis fugiat. Praesentium eveniet totam non praesentium nam ab quae soluta distinctio.',
+    review: 'The apartment was clean, comfortable, and in a great location. He communicates quickly and is very accommodating. Thanks again!',
     stars: 3
   },
   {
-    spotId: 14,
+    spotId: 4,
     userId: 3,
-    review: 'Ad at autem voluptatum voluptatem itaque nam aperiam eum. Nesciunt perferendis nostrum non minima dolores assumenda. Commodi aperiam aliquam unde cupiditate quos quaerat. Quisquam expedita et repellendus. Perspiciatis magnam animi eos provident fugit. Laborum neque tempora corrupti illo nostrum.',
+    review: 'Tyrell was a great host and his home in Toronto was among the best Airbnb stays I have ever had.',
     stars: 5
   },
   {
-    spotId: 18,
+    spotId: 10,
     userId: 10,
-    review: 'Laudantium hic fugiat ullam eligendi temporibus perspiciatis. Ratione libero animi praesentium fugit molestiae. Nemo optio dignissimos ipsam. Velit optio molestias molestias ducimus asperiores. Animi eligendi dolorum natus reprehenderit corrupti sapiente.',
+    review: 'We had an amazing time at Verner beautiful home and would love to visit again in the future.',
     stars: 5
   },
   {
     spotId: 10,
     userId: 5,
-    review: 'Id recusandae est magnam excepturi. Cum maxime excepturi. Veniam odit totam consequuntur similique dolorum.',
+    review: 'When we first stumbled upon this flat on AirBnB, it seemed almost too good to be true. There must be a catch! But everything was as perfect as it seemed online.',
     stars: 4
   },
   {
-    spotId: 17,
+    spotId: 7,
     userId: 4,
-    review: 'Similique fugit numquam necessitatibus praesentium reiciendis perferendis molestias laborum placeat. Possimus corporis reprehenderit eum inventore blanditiis ratione. Quis ea neque enim vitae. Molestiae exercitationem incidunt mollitia vel.',
+    review: 'If you are reading this, just book this amazing Airbnb. Every little detail is perfectly thought out and the space could not be more perfect. We are already planning our next trip back!',
     stars: 5
   },
   {
-    spotId: 16,
+    spotId: 6,
     userId: 3,
-    review: 'Est quos molestiae suscipit. Eligendi inventore molestiae numquam officia quisquam iusto. Est praesentium earum delectus cumque. Optio labore dolore ab provident culpa minus. Atque laborum quo recusandae provident non distinctio illum dolorum accusantium. Ex sequi vero quo nostrum.',
+    review: 'A very relaxing stay in a quiet and quaint neighborhood in Wisozkshire.',
     stars: 1
   },
   {
-    spotId: 19,
+    spotId: 9,
     userId: 3,
-    review: 'Ullam voluptas perferendis est accusamus maxime pariatur laudantium iure repellendus. Illo distinctio amet veniam et ipsa magnam laboriosam hic ad. Placeat deserunt pariatur provident nisi voluptatum vitae. Voluptatibus libero repudiandae provident. Dolores quia possimus aut ipsum officia sapiente voluptatem adipisci veritatis.',
+    review: 'I really enjoyed my stay here and think it is a great way to enjoy East Rosemarystead from the comfort of a place that feels like home.',
     stars: 3
   },
   {
-    spotId: 1,
+    spotId: 2,
     userId: 8,
-    review: 'A nemo sit voluptatum error quibusdam consectetur. Quasi optio reiciendis eos possimus nobis cum consectetur adipisci architecto. Nemo beatae neque excepturi velit voluptate veniam ipsa sit. Repellendus delectus eaque magni odit.',
+    review: 'Great place in a great location with excellent views. Walking distance to tons of cool stuff and in a really great neighborhood.',
     stars: 3
   },
   {
-    spotId: 18,
+    spotId: 8,
     userId: 10,
-    review: 'Veritatis minima possimus voluptatibus magni sed in minima eligendi illum. Omnis accusamus suscipit id. Rem possimus harum.',
+    review: 'Great apartment in a wonderful location for exploring Jodymouth. We appreciated the personal greeting and tips on how to spend our week.',
     stars: 2
   },
   {
     spotId: 8,
     userId: 3,
-    review: 'Ad in ad iusto quidem maiores atque commodi. Quidem facere fugit porro odit nam. Voluptatibus iure rerum dignissimos ipsum eligendi. Illum officiis vel veritatis quos modi molestias dolorem nihil. Accusamus consectetur consequatur blanditiis fuga molestias corrupti.',
+    review: 'This place is great! Easy to walk to good food and good coffee. Very cute. Very clean. It has everything you need for a trip to Syrian Arab Republic',
     stars: 4
   },
   {
     spotId: 7,
     userId: 7,
-    review: 'Quibusdam laudantium in impedit repudiandae natus odit sequi ducimus. Laborum ducimus alias ipsa maiores. Vero labore magni. Maxime quisquam culpa illum ea ipsam repellendus impedit sapiente. Suscipit tempora omnis laboriosam.',
+    review: 'Lovely apartment, really homely feel and beautiful touches. Rowan was quick to respond and helpful! Location was just out of the city centre in a very cosy area avoiding the main bustle. Thank you Rowan!',
     stars: 3
   },
   {
     spotId: 8,
     userId: 4,
-    review: 'Distinctio animi doloribus natus id corporis reprehenderit doloremque. Blanditiis totam dolorum aliquam tempore adipisci commodi recusandae officia. Harum eveniet laboriosam dolorem eveniet assumenda temporibus odio.',
+    review: 'This is a retreat! Stunning home, has everything you will need, amazing hosts and a lot of privacy. Everything is close by if you know how to get there.',
     stars: 3
   },
   {
-    spotId: 12,
+    spotId: 2,
     userId: 3,
-    review: 'Fugit vitae animi libero. Odit suscipit quos. Veniam perspiciatis est sit. Eaque velit numquam ad beatae voluptatibus temporibus vitae repudiandae cumque. Quae voluptas saepe aliquid explicabo inventore.',
+    review: 'Misael was a fantastic host. He was very accommodating, helpful and friendly. He gave us some superb recommendations on where to eat, places to shop and sights to see.',
     stars: 5
   },
   {
     spotId: 5,
     userId: 8,
-    review: 'Delectus est tenetur adipisci amet. Odio quibusdam porro possimus eum. Pariatur quisquam hic sed. Accusamus doloribus eaque minus harum explicabo.',
+    review: 'This apartment was located in an incredible part of town. I was literally walking distance to everything. It was just as pictured, very clean, and very private.',
     stars: 3
   },
   {
     spotId: 3,
     userId: 3,
-    review: 'Reiciendis debitis fugit enim repellendus sed. Molestiae tenetur iusto placeat aspernatur. Amet tempora ad iure hic eos. Dignissimos exercitationem eius molestias at. Ipsam magnam dolorum architecto illo quibusdam vel. Ut cupiditate esse sed.',
+    review: ' I had a wonderful time in South Isaiview! The apartment is beautifully furnished with particular attention to all the details for the best comfort.c eos. Dignissimos exercitationem eius molestias at.',
     stars: 1
   },
   {
-    spotId: 19,
+    spotId: 9,
     userId: 2,
-    review: 'Voluptas nesciunt adipisci quidem. Eum dolor voluptas beatae nesciunt eum inventore facilis illum nulla. Sint nulla nam exercitationem nulla odit at. Ipsum asperiores temporibus cumque reiciendis fuga debitis vel nihil sit. Incidunt doloremque ratione culpa voluptates. Iusto nisi vitae sint inventore esse praesentium.',
+    review: 'We loved our stay! We felt very comfortable, safe, and it was very clean. The location was great, too. We just loved every minute of our visit.',
     stars: 4
   },
   {
     spotId: 1,
     userId: 2,
-    review: 'Sequi asperiores eos. Nesciunt inventore dicta saepe aliquam vero saepe ipsum. Fugiat ipsa consectetur. Libero expedita quae possimus.',
+    review: 'A pleasure to host. Communicated well, warm and friendly, kept the place in great shape! We would welcome Cindi back anytime!',
     stars: 4
   },
   {
     spotId: 3,
     userId: 1,
-    review: 'Tenetur quaerat quam soluta libero. Ut soluta illo. Consectetur error tempora necessitatibus ipsa. Placeat exercitationem animi nesciunt in illum commodi deleniti explicabo. Amet consequatur impedit minus accusamus atque sapiente maiores labore enim. Excepturi deserunt vitae.',
+    review: 'A beautiful and sunny place near enough facilities needed for a relaxing holiday. Safe, friendly place near a most beautiful church and plenty of restaurants and cafes.',
     stars: 3
   }
 ];
