@@ -73,28 +73,28 @@ router.get('/', async (req, res) => {
  
     console.log(pagination.limit, pagination.offset);
 
-    const spots = await Spot.findAll({
-        attributes: {
-            include: [
-                [sequelize.literal(`COALESCE((
-                    SELECT AVG("stars")
-                    FROM "Reviews"
-                    WHERE "Reviews"."spotId" = "Spot"."id"
-                    ), '0')`), 'avgRating'
-                ],
-                [sequelize.literal(`COALESCE((
-                    SELECT url
-                    FROM "SpotImages"
-                    WHERE "SpotImages"."spotId" = "Spot"."id" 
-                    AND "SpotImages"."preview" = true
-                    ORDER BY "SpotImages"."id" ASC
-                    LIMIT 1 
-                    ), '')`), 'previewImage'
-            ]
-        ]
-    },
-        ...pagination
-    });
+    // const spots = await Spot.findAll({
+    //     attributes: {
+    //         include: [
+    //             [sequelize.literal(`COALESCE((
+    //                 SELECT AVG("stars")
+    //                 FROM "Reviews"
+    //                 WHERE "Reviews"."spotId" = "Spot"."id"
+    //                 ), '0')`), 'avgRating'
+    //             ],
+    //             [sequelize.literal(`COALESCE((
+    //                 SELECT url
+    //                 FROM "SpotImages"
+    //                 WHERE "SpotImages"."spotId" = "Spot"."id" 
+    //                 AND "SpotImages"."preview" = true
+    //                 ORDER BY "SpotImages"."id" ASC
+    //                 LIMIT 1 
+    //                 ), '')`), 'previewImage'
+    //         ]
+    //     ]
+    // },
+    //     ...pagination
+    // });
 
     // const spot = await Spot.findAll({
     //     group: ['Spot.id', 'previewImage.id'],
@@ -119,9 +119,46 @@ router.get('/', async (req, res) => {
     //     ],
     //     pagination: pagination
     // })
+
+    const spots = await Spot.findAll({
+        order: [['id', 'ASC']],
+        include: [
+            {
+                model: Review,
+                attributes: ['stars'],
+            },
+            {
+                as: 'previewImage',
+                model: SpotImage,
+                where : {preview : true},
+                attributes: ['url']
+            }
+        ],
+        ...pagination
+    })
+
+    const results = spots.map((spot) => ({
+        id: spot.id,
+        ownerId: spot.ownerId,
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        country: spot.country,
+        lat:spot.lat, //.toFixed(7),
+        lng:spot.lng,  //.toFixed(7),
+        name:spot.name,
+        description: spot.description,
+        price: spot.price,
+        createdAt: spot.createdAt,
+        updatedAt: spot.updatedAt,
+        avgRating: spot.Reviews.length > 0 ? spot.Reviews.reduce((total, current) => total + current.stars, 0) / spot.Reviews.length : null,
+        previewImage: spot.previewImage.length > 0 ? spot.previewImage[0]['url'] : ""
+    }));
+    
+
 res.status(200)
     return res.json({ 
-        Spots: spots,
+        Spots: results,
         page,
         size 
     });
@@ -162,32 +199,66 @@ router.get('/current', requireAuth, async (req, res) => {
     //     ]
     // })
 
-    const cUser = await Spot.findAll({ 
-        where: { ownerId: userId },
-        attributes: {
-            include: [
-                [sequelize.literal(`COALESCE((
-                    SELECT AVG("stars")
-                    FROM "Reviews"
-                    WHERE "Reviews"."spotId" = "Spot"."id"
-                    ), '0')`), 'avgRating'
-                ],
-                [sequelize.literal(`COALESCE((
-                    SELECT url
-                    FROM "SpotImages"
-                    WHERE "SpotImages"."spotId" = "Spot"."id" 
-                    AND "SpotImages"."preview" = true
-                    ORDER BY "SpotImages"."id" ASC
-                    LIMIT 1 
-                    ), '')`), 'previewImage'
-                ]
-            ]
-        },
-    });
+    // const cUser = await Spot.findAll({ 
+    //     where: { ownerId: userId },
+    //     attributes: {
+    //         include: [
+    //             [sequelize.literal(`COALESCE((
+    //                 SELECT AVG("stars")
+    //                 FROM "Reviews"
+    //                 WHERE "Reviews"."spotId" = "Spot"."id"
+    //                 ), '0')`), 'avgRating'
+    //             ],
+    //             [sequelize.literal(`COALESCE((
+    //                 SELECT url
+    //                 FROM "SpotImages"
+    //                 WHERE "SpotImages"."spotId" = "Spot"."id" 
+    //                 AND "SpotImages"."preview" = true
+    //                 ORDER BY "SpotImages"."id" ASC
+    //                 LIMIT 1 
+    //                 ), '')`), 'previewImage'
+    //             ]
+    //         ]
+    //     },
+    // });
 
-    res.status
- 
-    return res.json( { Spots: cUser } );
+    const cUser = await Spot.findAll({ 
+        order: [['id', 'ASC']],
+        where: { ownerId: userId },
+        include: [
+            {
+                model: Review,
+                attributes: ['stars'],
+            },
+            {
+                as: 'previewImage',
+                model: SpotImage,
+                where : {preview : true},
+                attributes: ['url']
+            }
+        ],
+    })
+
+    const results = cUser.map((spot) => ({
+        id: spot.id,
+        ownerId: spot.ownerId,
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        country: spot.country,
+        lat:spot.lat,
+        lng:spot.lng,
+        name:spot.name,
+        description: spot.description,
+        price: spot.price,
+        createdAt: spot.createdAt,
+        updatedAt: spot.updatedAt,
+        avgRating: spot.Reviews.length > 0 ? spot.Reviews.reduce((total, current) => total + current.stars, 0) / spot.Reviews.length : null,
+        previewImage: spot.previewImage.length > 0 ? spot.previewImage[0]['url'] : ""
+    }));
+        
+    res.status(200);
+    return res.json( { Spots: results } );
 
 });
 
