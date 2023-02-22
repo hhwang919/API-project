@@ -289,7 +289,7 @@ router.get('/:id', async (req, res,next) => {
                 attributes: [],
             },
             {
-                as: 'SpotImages',
+                as: 'previewImage',
                 model: SpotImage,
                 attributes: ['url']
             },
