@@ -22,8 +22,12 @@ const { requireAuth } = require('../../utils/auth');
 
 
 //get all spots
-router.get('/', async (req, res) => {
-    let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
+router.get('/', async (req, res, next) => {
+    // let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
+
+    const err = new Error("Validation error");
+    err.errors = [];
+
 
     let { page, size } = req.query;
 
@@ -47,16 +51,16 @@ router.get('/', async (req, res) => {
     if ( size > 20 ) size = 20;
 
     if ( page < 0 ) {
-        errorResult.errors.push("Page must be greater than or equal to 0");
+        err.errors.push("Page must be greater than or equal to 0");
     }
     if ( size < 0 ) {
-        errorResult.errors.push("Size must be greater than or equal to 0");
+        err.errors.push("Size must be greater than or equal to 0");
     }
 
-    if(errorResult.errors.length) {
-        res.status(400);
-        res.json(errorResult);
-        return;
+    if(err.errors.length) {
+        err.status(400);
+        err.title = "Vlidation error";
+        return next(err)
     }
 
 
@@ -130,8 +134,7 @@ router.get('/', async (req, res) => {
             {
                 as: 'previewImage',
                 model: SpotImage,
-                where : {preview : true},
-                attributes: ['url']
+                attributes: ['url', 'preview']
             }
         ],
         ...pagination
@@ -152,7 +155,7 @@ router.get('/', async (req, res) => {
         createdAt: spot.createdAt,
         updatedAt: spot.updatedAt,
         avgRating: spot.Reviews.length > 0 ? spot.Reviews.reduce((total, current) => total + current.stars, 0) / spot.Reviews.length : null,
-        previewImage: spot.previewImage.length > 0 ? spot.previewImage[0]['url'] : ""
+        previewImage: spot.previewImage.length > 0 ? spot.previewImage.filter(el => el.preview)[0]['url'] : ""
     }));
     
 
@@ -233,8 +236,7 @@ router.get('/current', requireAuth, async (req, res) => {
             {
                 as: 'previewImage',
                 model: SpotImage,
-                where : {preview : true},
-                attributes: ['url']
+                attributes: ['url', 'preview']
             }
         ],
     })
@@ -254,7 +256,7 @@ router.get('/current', requireAuth, async (req, res) => {
         createdAt: spot.createdAt,
         updatedAt: spot.updatedAt,
         avgRating: spot.Reviews.length > 0 ? spot.Reviews.reduce((total, current) => total + current.stars, 0) / spot.Reviews.length : null,
-        previewImage: spot.previewImage.length > 0 ? spot.previewImage[0]['url'] : ""
+        previewImage: spot.previewImage.length > 0 ? spot.previewImage.filter(el => el.preview)[0]['url'] : ""
     }));
         
     res.status(200);
@@ -265,7 +267,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 
 // Get details of a Spot from an id
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res,next) => {
     const spot = await Spot.findByPk(req.params.id, {
         group: ['Spot.id', 'previewImage.id','Owner.id'],
         attributes: {
@@ -308,7 +310,7 @@ router.get('/:id', async (req, res) => {
 })
 //Create a Spot
 
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res, next) => {
 
     let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
 
@@ -382,7 +384,7 @@ router.post('/', async (req, res) => {
 
 // ### Edit a Spot
 
-router.put('/:id', async (req, res) => {
+router.put('/:id',requireAuth, async (req, res, next) => {
     let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
 
     const { id } = req.params;
@@ -505,7 +507,7 @@ router.put('/:id', async (req, res) => {
 
 
 //Create an Image for a Spot
-router.post('/:spotId/images', requireAuth, async (req, res) => {
+router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
     const { spotId } = req.params;
 
@@ -573,7 +575,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 
 
 //Create a Review for a Spot based on the Spot's id
-router.post('/:id/reviews', requireAuth, async (req, res) => {
+router.post('/:id/reviews', requireAuth, async (req, res, next) => {
     let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
 
     const userId = req.user.id;
@@ -651,7 +653,7 @@ router.post('/:id/reviews', requireAuth, async (req, res) => {
 
 
 //Get Reviews by Spot Id
-router.get('/:id/reviews', async (req, res) => {
+router.get('/:id/reviews', async (req, res, next) => {
     let id = req.params.id
     id = parseInt(id);
     console.log(typeof (id), id)
@@ -684,7 +686,7 @@ router.get('/:id/reviews', async (req, res) => {
 
 
 //Get all Bookings for a Spot based on the Spot's id
-router.get('/:id/bookings', async (req, res) => {
+router.get('/:id/bookings',requireAuth, async (req, res, next) => {
 
     const bookings = await Booking.findAll({
         where: { spotId: req.params.id },
@@ -742,7 +744,7 @@ router.get('/:id/bookings', async (req, res) => {
 
 // ### Create a Booking from a Spot based on the Spot's id
 
-router.post('/:spotId/bookings', requireAuth, async (req, res) => {
+router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
     let errorResult = { message: "Validation error", statusCode: 400, errors: [] };
 
     const { spotId } = req.params;
