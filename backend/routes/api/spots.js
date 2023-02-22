@@ -77,19 +77,19 @@ router.get('/', async (req, res) => {
         attributes: {
             include: [
                 [sequelize.literal(`COALESCE((
-                SELECT AVG(stars)
-                FROM Reviews
-                WHERE Reviews.spotId = Spot.id
-                ), '')`), 'avgRating'
-            ],
-            [sequelize.literal(`COALESCE((
-                SELECT url
-                FROM SpotImages
-                WHERE SpotImages.spotId = Spot.id 
-                AND SpotImages.preview = true
-                ORDER BY SpotImages.id ASC
-                LIMIT 1 
-                ), '')`), 'previewImage'
+                    SELECT AVG("stars")
+                    FROM "Reviews"
+                    WHERE "Reviews"."spotId" = "Spot"."id"
+                    ), '0')`), 'avgRating'
+                ],
+                [sequelize.literal(`COALESCE((
+                    SELECT url
+                    FROM "SpotImages"
+                    WHERE "SpotImages"."spotId" = "Spot"."id" 
+                    AND "SpotImages"."preview" = true
+                    ORDER BY "SpotImages"."id" ASC
+                    LIMIT 1 
+                    ), '')`), 'previewImage'
             ]
         ]
     },
@@ -167,17 +167,17 @@ router.get('/current', requireAuth, async (req, res) => {
         attributes: {
             include: [
                 [sequelize.literal(`COALESCE((
-                    SELECT AVG(stars)
-                    FROM Reviews
-                    WHERE Reviews.spotId = Spot.id
-                    ), 0)`), 'avgRating'
+                    SELECT AVG("stars")
+                    FROM "Reviews"
+                    WHERE "Reviews"."spotId" = "Spot"."id"
+                    ), '0')`), 'avgRating'
                 ],
                 [sequelize.literal(`COALESCE((
                     SELECT url
-                    FROM SpotImages
-                    WHERE SpotImages.spotId = Spot.id
-                    AND SpotImages.preview = true
-                    ORDER BY SpotImages.id ASC
+                    FROM "SpotImages"
+                    WHERE "SpotImages"."spotId" = "Spot"."id" 
+                    AND "SpotImages"."preview" = true
+                    ORDER BY "SpotImages"."id" ASC
                     LIMIT 1 
                     ), '')`), 'previewImage'
                 ]
