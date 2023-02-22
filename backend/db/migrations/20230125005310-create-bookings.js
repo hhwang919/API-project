@@ -9,7 +9,7 @@ options.tableName = "Bookings";
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Bookings", {
+    await queryInterface.createTable(options, {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -19,13 +19,13 @@ module.exports = {
       spotId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        // onDelete: 'CASCADE',
+        onDelete: 'CASCADE',
         references: { model: 'Spots' },
       },
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        // onDelete: 'CASCADE',
+        onDelete: 'CASCADE',
         references: { model: 'Users' },
       },
       startDate: {
