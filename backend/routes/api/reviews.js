@@ -187,7 +187,7 @@ router.post('/:reviewId/images', requireAuth, validateReviewImage, async (req, r
     })
 
     res.status(200);
-    return res.json(newReviewImage); 
+    return res.json({id: newReviewImage.id, url: newReviewImage.url}); 
 });
 
 

@@ -269,7 +269,7 @@ router.get('/current', requireAuth, async (req, res) => {
 // Get details of a Spot from an id
 router.get('/:id', async (req, res,next) => {
     const spot = await Spot.findByPk(req.params.id, {
-        group: ['Spot.id', 'previewImage.id','Owner.id'],
+        group: ['Spot.id', 'SpotImages.id'],
         attributes: {
             include: [
                 [
@@ -289,7 +289,6 @@ router.get('/:id', async (req, res,next) => {
                 attributes: [],
             },
             {
-                as: 'previewImage',
                 model: SpotImage,
                 attributes: ['url']
             },
@@ -570,9 +569,31 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     const newImage = await SpotImage.create({ url, preview, spotId });
 
     res.status(200)
-    return res.json(newImage);
+    return res.json({id: newImage.id, url: newImage.url, preview: newImage.preview});
 })
 
+
+
+    // const results = cUser.map((spot) => ({
+    //     id: spot.id,
+    //     ownerId: spot.ownerId,
+    //     address: spot.address,
+    //     city: spot.city,
+    //     state: spot.state,
+    //     country: spot.country,
+    //     lat:spot.lat,
+    //     lng:spot.lng,
+    //     name:spot.name,
+    //     description: spot.description,
+    //     price: spot.price,
+    //     createdAt: spot.createdAt,
+    //     updatedAt: spot.updatedAt,
+    //     avgRating: spot.Reviews.length > 0 ? spot.Reviews.reduce((total, current) => total + current.stars, 0) / spot.Reviews.length : null,
+    //     previewImage: spot.previewImage.length > 0 ? spot.previewImage.filter(el => el.preview)[0]['url'] : ""
+    // }));
+        
+    // res.status(200);
+    // return res.json( { Spots: results } );
 
 //Create a Review for a Spot based on the Spot's id
 router.post('/:id/reviews', requireAuth, async (req, res, next) => {
@@ -758,6 +779,13 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
         })
         res.status(404);
         return;
+    }
+
+    if (spot.ownerId === req.user.id) {         // This is different use "==="  not "!=="
+        const err = new Error("Forbidden");
+        err.status = 403;
+        err.title = "Forbidden";
+        return next(err);
     }
 
     let newStartDay;
