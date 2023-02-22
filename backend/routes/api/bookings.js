@@ -30,7 +30,7 @@ router.get('/current', requireAuth, async(req, res)=>{
                     {
                         as: 'previewImage',
                         model: SpotImage,
-                        attributes: ['url']
+                        attributes: ['url', 'preview']
                     }
                 ]
             }
@@ -42,14 +42,34 @@ router.get('/current', requireAuth, async(req, res)=>{
 
     const result = cUser.map((booking) => {
         return {
+            // id: booking.id,
+            // spotId: booking.spotId,
+            // Spots: booking.Spot, 
+            // userId: booking.userId,   
+            // startDate: booking.startDate,
+            // enddate: booking.endDate,
+            // createdAt: booking.createdAt,
+            // updatedAt: booking.updatedAt
+
             id: booking.id,
             spotId: booking.spotId,
-            Spots: booking.Spot, 
-            userId: booking.userId,   
-            startDate: booking.startDate,
-            enddate: booking.endDate,
-            createdAt: booking.createdAt,
-            updatedAt: booking.updatedAt
+            Spot: { id: booking.Spot.id,
+                ownerId: booking.Spot.ownerId,
+                address: booking.Spot.address,
+                city: booking.Spot.city,
+                state: booking.Spot.state,
+                country: booking.Spot.country,
+                lat:booking.Spot.lat,
+                lng:booking.Spot.lng,
+                name:booking.Spot.name,
+                description: booking.Spot.description,
+                price: booking.Spot.price,
+                previewImage: booking.Spot.previewImage.length > 0 ? booking.Spot.previewImage.filter(el => el.preview)[0]['url'] : ""},
+                userId: booking.userId,
+                startDate: booking.startDate,
+                enddate: booking.endDate,
+                createdAt: booking.createdAt,
+                updatedAt: booking.updatedAt,
         }
     });
 

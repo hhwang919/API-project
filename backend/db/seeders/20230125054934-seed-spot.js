@@ -26,8 +26,6 @@ options.tableName = "Spots";
 //  }
 //))
 
-// reduce to 10 records, change ownerId=1 for id=1, ownerid=6, id=10
-
 const spots = [
 {
   address: '123 Disney Lane',
