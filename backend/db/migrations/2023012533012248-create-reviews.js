@@ -5,7 +5,7 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
  options.schema = process.env.SCHEMA; // define your schema in options object
 }
-options.tableName = "Bookings";
+options.tableName = "Reviews";
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -19,22 +19,18 @@ module.exports = {
       spotId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        onDelete: 'CASCADE',
         references: { model: 'Spots' },
       },
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        onDelete: 'CASCADE',
         references: { model: 'Users' },
       },
-      startDate: {
-        type: Sequelize.DATEONLY
-
+      review: {
+        type: Sequelize.TEXT
       },
-      endDate: {
-        type: Sequelize.DATEONLY,
-        // validate:
+      stars: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -46,7 +42,7 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
-    }, options);
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(options);
