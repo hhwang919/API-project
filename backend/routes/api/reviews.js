@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router();
 
-//const { Spot, User, sequelize, SpotImage, Review, ReviewImage } = require('../../db/models');
-const { Spot, User, Review, ReviewImage, sequelize } = require('../../db/models');
+const { Spot, User, sequelize, SpotImage, Review, ReviewImage } = require('../../db/models');
+// const { Spot, User, Review, ReviewImage, sequelize } = require('../../db/models');
 //const review = require('../../db/models/review');
 
 const { check } = require('express-validator');
@@ -36,7 +36,7 @@ router.get('/', async(req, res)=>{
 })
 
 
-//### Get all reviews by current user 
+// /### Get all reviews by current user 
 router.get('/current', requireAuth, async(req, res)=>{
     const userId = req.user.id
     // console.log(userId)
@@ -53,32 +53,69 @@ router.get('/current', requireAuth, async(req, res)=>{
             },
             {
                 model: Spot,
-                attributes: [
-                    'id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price',
-                    [sequelize.literal(`COALESCE((
-                        SELECT url
-                        FROM SpotImages
-                        WHERE SpotImages.spotId = Spot.id
-                        AND preview = true
-                        ORDER BY SpotImages.id ASC
-                        LIMIT 1 
-                        ), '')`), 'previewImage'
-                    ]
+                attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price'],
+                include: [
+                    {
+                        as: 'previewImage',
+                        model: SpotImage,
+                        attributes: ['url', 'preview']
+                    }
                 ]
+
+                // attributes: [
+                //     'id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price',
+                //     [sequelize.literal(`COALESCE((
+                //         SELECT "url"
+                //         FROM "SpotImages"
+                //         WHERE "SpotImages"."spotId" = "Spot"."id"
+                //         AND "preview" = true
+                //         ORDER BY "SpotImages"."id" ASC
+                //         LIMIT 1 
+                //         ), '')`), 'previewImage'
+                //     ]
+                // ]
             },
             {
                 model: ReviewImage,
-                attributes: ['id', 'url']
+                attributes: ['id', 'url'],
+                order: [['ReviewImage.id', 'ASC']]
             }
         ]
-    }); 
+    });
     
+   
+
+    const results = cUser.map((review) =>({
+        id: review.id,
+        spotId: review.spotId,
+        userId: review.userId,
+        review: review.review,
+        stars: review.stars,
+        createdAt: review.createdAt,
+        updatedAt: review.updatedAt,
+        Users: review.User,
+        Spot: { id: review.Spot.id,
+                ownerId: review.Spot.ownerId,
+                address: review.Spot.address,
+                city: review.Spot.city,
+                state: review.Spot.state,
+                country: review.Spot.country,
+                lat:review.Spot.lat,
+                lng:review.Spot.lng,
+                name:review.Spot.name,
+                description: review.Spot.description,
+                price: review.Spot.price,
+                previewImage: review.Spot.previewImage.length > 0 ? review.Spot.previewImage.filter(el => el.preview)[0]['url'] : ""},
+        ReviewImages: review.ReviewImages
+        }),
+    );
+
+     
     res.status(200);
-    return res.json( { Reviews: cUser });
+    //return res.json( { Reviews: cUser });
+    return res.json( { Reviews: results });
 
 });
-
-
 //### Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', requireAuth, validateReviewImage, async (req, res, next) => {
     const { reviewId } = req.params;
