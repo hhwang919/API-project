@@ -34,11 +34,11 @@ const spots = [
   city: 'San Francisco',
   state: 'California',
   country: 'United States of America',
-  lat: '37.7645358,',
-  lng: '-122.4730327',
+  lat: 37.7645358,
+  lng: -122.4730327,
   name: "App Academy",
   description: 'Place where web developers are created.',
-  price: '123',
+  price: 123,
   ownerId: 1
 },
 {
@@ -46,11 +46,11 @@ const spots = [
   city: 'Hampton',
   state: 'Florida',
   country: 'United States of America',
-  lat: '63.5771247',
-  lng: '104.5757216',
+  lat: 63.5771247,
+  lng: 104.5757216,
   name: 'Archie Parisian',
   description: 'Vitae praesentium veniam.',
-  price: '624.39',
+  price: 624.39,
   ownerId: 4
 },
 {
@@ -58,11 +58,11 @@ const spots = [
   city: 'South Isaiview',
   state: 'New Jersey',
   country: 'United States of America',
-  lat: '-14.9842022',
-  lng: '-62.7070975',
+  lat: -14.9842022,
+  lng: -62.7070975,
   name: 'Shelley Schamberger',
   description: 'Pariatur odit repudiandae nobis perspiciatis animi optio.',
-  price: '730.93',
+  price: 730.93,
   ownerId: 7
 },
 {
@@ -70,11 +70,11 @@ const spots = [
   city: 'Dublin',
   state: 'Tennessee',
   country: 'United States of America',
-  lat: '16.9107321',
-  lng: '166.6806788',
+  lat: 16.9107321,
+  lng: 166.6806788,
   name: 'Vanessa Huels',
   description: 'At inventore iure natus iste rem.',
-  price: '61.84',
+  price: 61.84,
   ownerId: 5
 },
 {
@@ -82,11 +82,11 @@ const spots = [
   city: 'Brookline',
   state: 'Wisconsin',
   country: 'United States of America',
-  lat: '-54.7284234',
-  lng: '96.5523578',
+  lat: -54.7284234,
+  lng: 96.5523578,
   name: 'Bridget Rogahn',
   description: 'Sequi suscipit reiciendis aperiam quos.',
-  price: '867.25',
+  price: 867.25,
   ownerId: 6
 },
 {
@@ -94,11 +94,11 @@ const spots = [
   city: 'Lake Terrance',
   state: 'Indiana',
   country: 'United States of America',
-  lat: '-36.5664608',
-  lng: '-76.5673545',
+  lat: -36.5664608,
+  lng: -76.5673545,
   name: 'Terri Reilly',
   description: 'Aperiam ratione dignissimos vitae veniam necessitatibus quasi magnam harum.',
-  price: '200.78',
+  price: 200.78,
   ownerId: 1
 },
 {
@@ -106,11 +106,11 @@ const spots = [
   city: 'New Bert',
   state: 'Missouri',
   country: 'United States of America',
-  lat: '-86.7872211',
-  lng: '-0.6655354',
+  lat: -86.7872211,
+  lng: -0.6655354,
   name: 'Mrs. Carmen Bayer',
   description: 'Numquam impedit enim incidunt dolores doloribus adipisci cupiditate.',
-  price: '693.13',
+  price: 693.13,
   ownerId: 8
 },
 {
@@ -118,11 +118,11 @@ const spots = [
   city: 'Abernathymouth',
   state: 'Rhode Island',
   country: 'United States of America',
-  lat: '29.9861982',
-  lng: '52.9130795',
+  lat: 29.9861982,
+  lng: 52.9130795,
   name: 'Maurice Hahn',
   description: 'Laborum eius mollitia doloremque sint sed.',
-  price: '538.94',
+  price: 538.94,
   ownerId: 10
 },
 {
@@ -130,11 +130,11 @@ const spots = [
   city: 'Lake Wilberborough',
   state: 'Louisiana',
   country: 'United States of America',
-  lat: '21.7411221',
-  lng: '-176.0432537',
+  lat: 21.7411221,
+  lng: -176.0432537,
   name: 'Ana Pfannerstill',
   description: 'Mollitia voluptate magnam accusantium laborum adipisci.',
-  price: '497.94',
+  price: 497.94,
   ownerId: 2
 },
 {
@@ -142,11 +142,11 @@ const spots = [
   city: 'Oakland',
   state: 'Massachusetts',
   country: 'United States of America',
-  lat: '31.2931342',
-  lng: '-164.8534809',
+  lat: 31.2931342,
+  lng: -164.8534809,
   name: 'Dr. Eric Mann',
   description: 'Reiciendis repudiandae nesciunt quasi quibusdam sunt facilis totam.',
-  price: '449.81',
+  price: 449.81,
   ownerId: 6
 }
 ];
