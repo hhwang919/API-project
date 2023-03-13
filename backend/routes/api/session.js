@@ -55,7 +55,7 @@ router.post(
   // Restore session user
 router.get(
     '/',
-    requireAuth,
+    // requireAuth,
     (req, res) => {
       const { user } = req;
       if (user) {
