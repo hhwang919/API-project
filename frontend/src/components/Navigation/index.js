@@ -38,12 +38,18 @@ function Navigation({ isLoaded }){
   }
 
   return (
+   
+    <div>
     <ul>
       <li>
         <NavLink exact to="/">Home</NavLink>
       </li>
       {isLoaded && sessionLinks}
     </ul>
+     <div className='tile'>
+    <SpotListModal />
+    </div>
+    </div>
   );
 }
 
