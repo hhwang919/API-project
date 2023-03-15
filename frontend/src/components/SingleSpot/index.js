@@ -1,15 +1,29 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { getSpot } from '../../store/spotReducer';
+import { useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-function SingleSpot({ spots }) {
-  const { id } = useParams();
+function SingleSpot() {
+    const { id } = useParams();
+    const dispatch = useDispatch();
+    
+    const spots = useSelector(state=>state.spotState.allSpots);
+    console.log("this is singleSpot:", spots)
 
   const spotsArray = Object.values(spots);
   //console.log(spotsArray)
   const spot = spotsArray.find(spot => spot.id === +id);
   console.log(spot);
 
+
+  useEffect(() => {
+    dispatch(getSpot());
+  }, [dispatch]);
+  
+
   return (
+    // <div>Hello</div>
     <div className="spot-tile" onClick={() => spots.onClick(id)}>
       <div className="spot-info">
         <div className="spot-location">
@@ -25,3 +39,7 @@ function SingleSpot({ spots }) {
 }
 
 export default SingleSpot;
+
+
+
+

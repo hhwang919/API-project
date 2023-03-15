@@ -7,6 +7,7 @@ import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import './Navigation.css';
 import SpotListModal from '../SpotListModal';
+import SingleSpot from '../SingleSpot';
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
@@ -46,6 +47,7 @@ function Navigation({ isLoaded }){
       </li>
       {isLoaded && sessionLinks}
     </ul>
+
      <div className='tile'>
     <SpotListModal />
     </div>
