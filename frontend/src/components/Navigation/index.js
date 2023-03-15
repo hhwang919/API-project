@@ -29,10 +29,10 @@ function Navigation({ isLoaded }){
           buttonText="Sign Up"
           modalComponent={<SignupFormModal />}
         />
-        <OpenModalButton
+        {/* <OpenModalButton
           buttonText="List All Spots"
           modalComponent={<SpotListModal />}
-        />
+        /> */}
       </li>
     );
   }

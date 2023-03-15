@@ -6,6 +6,8 @@
 //GET ALL spots working first.
 //Get Single spot
 
+import { csrfFetch } from './csrf';
+
 const LOAD_SPOTS = 'spot/loadSpots';
 const ADD_SPOT = 'spot/addSpot';
 const UPDATE_SPOT = 'spot/updateSpot';
@@ -25,7 +27,7 @@ export const addSpot = (spot) => {
   };
 };
 
-export const updateSpot = (spotId) => {
+export const updateSpot = (spotId) => {   // AI use spot I think should use spotID
   return {
     type: UPDATE_SPOT,
     spotId
@@ -41,24 +43,29 @@ export const deleteSpot = (spotId) => {
 
 export const fetchSpots = () => async (dispatch) => {
   const response = await fetch('/api/spots');
+  //const response = await csrfFetch('/api/spots');
   const spots = await response.json();
-  console.log("fetch spots", spots)
+  //console.log("spotReducer-spots: ", spots);
   dispatch(loadSpots(spots));
 };
 
-export const createSpot = (payload) => async (dispatch) => {
-  const response = await fetch('/api/spots', {
+export const createSpot = (spot) => async (dispatch) => {
+    const { address, city, state, country, lat, lng, name, description, price } = spot;
+    const response = await csrfFetch('/api/spots', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    body: JSON.stringify({
+        address, city, state, country, lat, lng, name, description, price
+    })
   });
 
   if (response.ok) {
-    const spot = await response.json();
-    dispatch(addSpot(spot));
-    return spot;
+    const data = await response.json();
+    dispatch(addSpot(data.spot));
+    return response;
   }
 };
+
 
 export const editSpot = (spotId, payload) => async (dispatch) => {
   const response = await fetch(`/api/spots/${spotId}`, {
@@ -69,7 +76,7 @@ export const editSpot = (spotId, payload) => async (dispatch) => {
 
   if (response.ok) {
     const spot = await response.json();
-    dispatch(updateSpot(spot));
+    dispatch(updateSpot(spotId));
     return spot;
   }
 };
@@ -85,20 +92,21 @@ export const removeSpot = (spotId) => async (dispatch) => {
   }
 };
 
-const initialState = { entries: [], isLoading: true };
+//const initialState = { entries: [], isLoading: true };
+const initialState = {allSpots: {}, singleSpot: {}};
+
 const spotReducer = (state = initialState, action) => {
-    console.log("action type:", action.type)
-    switch (action.type) {
-      case LOAD_SPOTS:
+    //console.log("action.type",  action.type)
+  switch (action.type) {
+    case LOAD_SPOTS:
         let normalizedSpots = {};
         action.spots.Spots.forEach((spot) => normalizedSpots[spot.id] = spot);
         // console.log("normalizedSpots: ", normalizedSpots);
-        return { ...state, entries: {...normalizedSpots} }; 
+        return { ...state, allSpots: normalizedSpots }; 
 
-    //    return  { ...state, entries: [ ...action.spots.Spots ] };
-     
+        //return { ...state, entries: [...action.spots.Spots] }; 
     case ADD_SPOT:
-      return { ...state, entries: [...state.entries, action.spot] };
+      return { ...state, allSpots: [...state.allSpots, action.spot] };
     case UPDATE_SPOT:
       return {
         ...state,
