@@ -6,6 +6,7 @@ import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import './Navigation.css';
+import SpotListModal from '../SpotListModal';
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
@@ -27,6 +28,10 @@ function Navigation({ isLoaded }){
         <OpenModalButton
           buttonText="Sign Up"
           modalComponent={<SignupFormModal />}
+        />
+        <OpenModalButton
+          buttonText="List All Spots"
+          modalComponent={<SpotListModal />}
         />
       </li>
     );
