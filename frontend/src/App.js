@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
+
 import Navigation from "./components/Navigation";
 import SingleSpot from "./components/SingleSpot";
-
 import SpotListModal from "./components/SpotListModal"
 
 function App() {
@@ -14,14 +14,18 @@ function App() {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 //create route for home page.
+const spot = []
   return (
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
           <Route exact path="/"/> 
-          <Route path="/spots/:id" component={{SingleSpot}} />
-          <Route path="/spots" component={{SpotListModal}} />
+          <Route exact path="/api/spots/:id">
+            <SingleSpot spot={spot} />
+            
+            </Route> 
+          <Route path="/api/spots" component={{SpotListModal}} /> 
         </Switch>
       )}
     </>
