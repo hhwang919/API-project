@@ -5,19 +5,23 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import SingleSpot from "./components/SingleSpot";
 
+import SpotListModal from "./components/SpotListModal"
+
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
-
+//create route for home page.
   return (
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route exact path="/"/> 
           <Route path="/spots/:id" component={{SingleSpot}} />
+          <Route path="/spots" component={{SpotListModal}} />
         </Switch>
       )}
     </>
@@ -25,3 +29,7 @@ function App() {
 }
 
 export default App;
+
+//build route for Home component
+
+//anything not rendered inside another componennt, should have its own component.
