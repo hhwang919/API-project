@@ -8,6 +8,7 @@ import SignupFormModal from '../SignupFormModal';
 import './Navigation.css';
 import SpotListModal from '../SpotListModal';
 import SingleSpot from '../SingleSpot';
+import CreateSpot from '../CreateSpot';
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
@@ -30,6 +31,13 @@ function Navigation({ isLoaded }){
           buttonText="Sign Up"
           modalComponent={<SignupFormModal />}
         />
+        <NavLink to={`/spots/new`}> 
+        <button>Create Spot</button>
+        </NavLink>
+        {/* <CreateSpot
+        buttonText="Creat Spot"
+        modalComponent={<CreateSpot />}
+        /> */}
         {/* <OpenModalButton
           buttonText="List All Spots"
           modalComponent={<SpotListModal />}

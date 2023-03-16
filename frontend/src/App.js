@@ -6,6 +6,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import SingleSpot from "./components/SingleSpot";
 import SpotListModal from "./components/SpotListModal"
+import CreateSpot from "./components/CreateSpot";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,10 +23,10 @@ const spot = []
         <Switch>
           <Route exact path="/" component={SpotListModal}/> 
           {/* <SpotListModal /> */}
+            <Route exact path="/spots/new" component={CreateSpot} />
 
           <Route exact path="/api/spots/:id">
             <SingleSpot spot={spot} />
-            
             </Route> 
           {/* <Route path="/api/spots" component={{SpotListModal}} />  */}
         </Switch>
