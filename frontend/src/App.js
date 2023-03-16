@@ -21,6 +21,7 @@ const spot = []
       {isLoaded && (
         <Switch>
           <Route exact path="/"/> 
+          <SpotListModal />
           <Route exact path="/api/spots/:id">
             <SingleSpot spot={spot} />
             
