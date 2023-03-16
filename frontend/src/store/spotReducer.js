@@ -10,7 +10,7 @@ import { csrfFetch } from './csrf';
 
 const ALL_SPOTS = 'spot/allSpots';
 const ONE_SPOT = 'spot/oneSpot';
-// const ADD_SPOT = 'spot/addSpot';
+const ADD_SPOT = 'spot/addSpot';
 // const UPDATE_SPOT = 'spot/updateSpot';
 // const DELETE_SPOT = 'spot/deleteSpot';
 
@@ -28,12 +28,12 @@ export const oneSpot = (spot) => {
     };
   };
 
-// export const addSpot = (spot) => {
-//   return {
-//     type: ADD_SPOT,
-//     spot
-//   };
-// };
+export const addSpot = (spot) => {
+  return {
+    type: ADD_SPOT,
+    spot
+  };
+};
 
 // export const updateSpot = (spotId) => {   // AI use spot I think should use spotID
 //   return {
@@ -128,6 +128,7 @@ const spotReducer = (state = initialState, action) => {
         singleSpot: { ...action.spot.spot,
         SpotImages: [ ...action.spot.spot.SpotImages],
         Owner: { ...action.spot.spot.Owner}}};
+        case ADD_SPOT:
     default:
       return state;
   }

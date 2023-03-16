@@ -11,11 +11,11 @@ function SingleSpot() {
     // const spots = useSelector(state=>state.spotState.allSpots);
     const spot = useSelector(state=>state.spotState.singleSpot);
     console.log("this is singleSpot:", spot)
+    console.log(spot);
 
 //   const spotsArray = Object.values(spots);
 //   //console.log(spotsArray)
 //   const spot = spotsArray.find(spot => spot.id === +id);
-  console.log(spot);
 // console.log("This is spotimages,", spot.SpotImages)
 
 // console.log("Spotimages at 0",spot.SpotImages[0])
