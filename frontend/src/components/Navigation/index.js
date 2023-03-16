@@ -47,6 +47,10 @@ function Navigation({ isLoaded }){
       </li>
       {isLoaded && sessionLinks}
     </ul>
+    <div>
+      {/* <SpotListModal /> */}
+
+    </div>
 
      {/* <div className='tile'>
     <SpotListModal />

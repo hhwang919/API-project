@@ -20,13 +20,14 @@ const spot = []
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route exact path="/"/> 
-          <SpotListModal />
+          <Route exact path="/" component={SpotListModal}/> 
+          {/* <SpotListModal /> */}
+
           <Route exact path="/api/spots/:id">
             <SingleSpot spot={spot} />
             
             </Route> 
-          <Route path="/api/spots" component={{SpotListModal}} /> 
+          {/* <Route path="/api/spots" component={{SpotListModal}} />  */}
         </Switch>
       )}
     </>

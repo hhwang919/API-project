@@ -57,8 +57,8 @@ export const fetchSpots = () => async (dispatch) => {
   dispatch(allSpots(spots));
 };
 
-export const getSpot = () => async (dispatch) => {
-    const response = await csrfFetch('/api/spots/:id');
+export const getSpot = (id) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${id}`);
     //const response = await csrfFetch('/api/spots');
     const spot = await response.json();
     //console.log("spotReducer-spots: ", spots);
@@ -125,9 +125,9 @@ const spotReducer = (state = initialState, action) => {
     case ONE_SPOT:
     //   console.log("action.spot")
       return { ...state, 
-        singleSpot: { ...action.spot,
-        SpotImages: [ ...action.spot.SpotImages],
-        Owner: { ...action.spot.Owner}}};
+        singleSpot: { ...action.spot.spot,
+        SpotImages: [ ...action.spot.spot.SpotImages],
+        Owner: { ...action.spot.spot.Owner}}};
     default:
       return state;
   }

@@ -8,25 +8,46 @@ function SingleSpot() {
     const { id } = useParams();
     const dispatch = useDispatch();
     
-    const spots = useSelector(state=>state.spotState.allSpots);
-    console.log("this is singleSpot:", spots)
+    // const spots = useSelector(state=>state.spotState.allSpots);
+    const spot = useSelector(state=>state.spotState.singleSpot);
+    console.log("this is singleSpot:", spot)
 
-  const spotsArray = Object.values(spots);
-  //console.log(spotsArray)
-  const spot = spotsArray.find(spot => spot.id === +id);
+//   const spotsArray = Object.values(spots);
+//   //console.log(spotsArray)
+//   const spot = spotsArray.find(spot => spot.id === +id);
   console.log(spot);
+// console.log("This is spotimages,", spot.SpotImages)
 
+// console.log("Spotimages at 0",spot.SpotImages[0])
+// console.log("Spotimages at url",spot.SpotImages[0].url)
+
+const myUrl = spot.SpotImages[0].url
+console.log("my URL:", myUrl)
 
   useEffect(() => {
-    dispatch(getSpot());
-  }, [dispatch]);
+    dispatch(getSpot(id));
+  }, [dispatch], id);
   
 
   return (
     // <div>Hello</div>
-    <div className="spot-tile" onClick={() => spots.onClick(id)}>
+    
+    <div className="spot-tile" onClick={() => spot.onClick(id)}>
+          {/* <span className="spot-state" >{spot.SpotImages[0].url}</span> */}
       <div className="spot-info">
+          {/* <span className="spot-state" src={spot.Spotimages.url}>{spot.SpotImages.url}</span> */}
+          {/* <div className="container">
+        <img src={spot.SpotImages[0].url} alt={spot.name} />
+          <div className="image-container">
+            <img src={spot.SpotImages[1].url} alt={spot.name} />
+            <img src={spot.SpotImages[2].url} alt={spot.name} />
+            <img src={spot.SpotImages[3].url} alt={spot.name} />
+            <img src={spot.SpotImages[4].url} alt={spot.name} />
+          </div>
+      </div> */}
+         <img src={myUrl} alt={spot.name} />
         <div className="spot-location">
+            {/* <div>{spot.SpotImages[0].url}</div> */}
           <span className="spot-city">{spot.city}</span>
           <span className="spot-state">{spot.state}</span>
         </div>
