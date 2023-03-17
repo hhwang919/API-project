@@ -7,6 +7,8 @@ import Navigation from "./components/Navigation";
 import SingleSpot from "./components/SingleSpot";
 import SpotListModal from "./components/SpotListModal"
 import CreateSpotForm from "./components/CreateSpot/CreateSpotForm";
+import ManageSpots from "./components/ManageSpots";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -22,6 +24,7 @@ const spot = []
       {isLoaded && (
         <Switch>
           <Route exact path="/" component={SpotListModal}/> 
+            <Route exact path="/spots/current" component={ManageSpots}/>
             <Route exact path="/spots/new" component={CreateSpotForm} />
           <Route exact path="/spots/:id">
             <SingleSpot spot={spot} />
