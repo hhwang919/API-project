@@ -6,7 +6,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import SingleSpot from "./components/SingleSpot";
 import SpotListModal from "./components/SpotListModal"
-import CreateSpot from "./components/CreateSpot";
+import CreateSpotForm from "./components/CreateSpot/CreateSpotForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,10 +22,8 @@ const spot = []
       {isLoaded && (
         <Switch>
           <Route exact path="/" component={SpotListModal}/> 
-          {/* <SpotListModal /> */}
-            <Route exact path="/spots/new" component={CreateSpot} />
-
-          <Route exact path="/api/spots/:id">
+            <Route exact path="/spots/new" component={CreateSpotForm} />
+          <Route exact path="/spots/:id">
             <SingleSpot spot={spot} />
             </Route> 
           {/* <Route path="/api/spots" component={{SpotListModal}} />  */}
@@ -37,6 +35,7 @@ const spot = []
 
 export default App;
 
+{/* <SpotListModal /> */}
 //build route for Home component
 
 //anything not rendered inside another componennt, should have its own component.
