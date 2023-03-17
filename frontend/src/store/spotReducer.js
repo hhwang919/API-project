@@ -64,6 +64,12 @@ export const fetchSpots = () => async (dispatch) => {
   //console.log("spotReducer-spots: ", spots);
   dispatch(allSpots(spots));
 };
+export const getUserSpots = () => async (dispatch) => {
+    const response = await csrfFetch('/api/spots/current');
+    const uspots = await response.json();
+    // console.log("spotReducer-spots: ", uspots);
+    dispatch(userSpots(uspots));
+  }
 
 export const getSpot = (id) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${id}`);
@@ -73,12 +79,6 @@ export const getSpot = (id) => async (dispatch) => {
     dispatch(oneSpot(spot));
 }
 
-export const getUserSpots = () => async (dispatch) => {
-    const response = await csrfFetch('/api/spots/current');
-    const uspots = await response.json();
-    //console.log("spotReducer-spots: ", spots);
-    dispatch(userSpots(uspots));
-  }
   
 
 
@@ -132,11 +132,11 @@ function normalizeSpots(spots) {
   }
 
 //const initialState = { entries: [], isLoading: true };
-const initialState = {allSpots: {}, singleSpot: {}};
+const initialState = {allSpots: {}, singleSpot: {}, userSpots: {}};
 
 const spotReducer = (state = initialState, action) => {
 //   console.log("action.type",  action.type);
-console.log("this is action:", action)
+// console.log("this is action:", action)
 let newState;
   switch (action.type) {
     case ALL_SPOTS:
@@ -159,7 +159,7 @@ let newState;
             return newState;
         case USER_SPOTS:
             const normalizedUserSpots = normalizeSpots(action.uspots);
-            return { ...state, allSpots: normalizedUserSpots }; 
+            return { ...state, userSpots: normalizedUserSpots }; 
     default:
       return state;
   }

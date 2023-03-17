@@ -5,13 +5,14 @@ import { useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 function SingleSpot() {
+    console.log("this is singleSpot",)
     const { id } = useParams();
     const dispatch = useDispatch();
     
     // const spots = useSelector(state=>state.spotState.allSpots);
     const spot = useSelector(state=>state.spotState.singleSpot);
-    console.log("this is singleSpot:", spot)
-    console.log(spot);
+    // console.log("this is singleSpot:", spot)
+    // console.log(spot);
 
 //   const spotsArray = Object.values(spots);
 //   //console.log(spotsArray)
