@@ -24,11 +24,7 @@ function SignupFormModal() {
         .then(closeModal)
         .catch(async (res) => {
           const data = await res.json();
-          // console.log("Data errors array:", Object.values(data.errors))
-          // setErrors(Object.values(errors))
-          // console.log("arrays errors:", errors )
-          // console.log("arrays errors:", setErrors(Object.values(errors)) )
-
+       
           if (data && data.errors) setErrors(Object.values(data.errors));
         });
     }

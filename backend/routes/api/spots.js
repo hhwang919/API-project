@@ -353,7 +353,7 @@ router.post('/', requireAuth, async (req, res, next) => {
     }
 
     if (!name || name === '') {
-        errorResult.errors.push("Longitude is not valid");
+        errorResult.errors.push("Name is not valid");
     }
     else if (name.length > 50) {
         errorResult.errors.push("Name must be less than 50 characters");

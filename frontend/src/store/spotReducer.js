@@ -78,8 +78,9 @@ export const createSpot = (spot) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
-    dispatch(oneSpot(data.spot));
-    return response;
+    console.log("this is data", data)
+    dispatch(addSpot(data));
+    return data;
   }
 };
 
@@ -114,13 +115,14 @@ const initialState = {allSpots: {}, singleSpot: {}};
 
 const spotReducer = (state = initialState, action) => {
 //   console.log("action.type",  action.type);
-
+console.log("this is action:", action)
+let newState;
   switch (action.type) {
     case ALL_SPOTS:
         let normalizedSpots = {};
-        console.log("action Spots:", action.spots)
+        // console.log("action Spots:", action.spots)
         action.spots.Spots.forEach((spot) => normalizedSpots[spot.id] = spot);
-        console.log("normalizedSpots: ", normalizedSpots);
+        // console.log("normalizedSpots: ", normalizedSpots);
         return { ...state, allSpots: normalizedSpots }; 
     case ONE_SPOT:
     //   console.log("action.spot")
@@ -129,6 +131,11 @@ const spotReducer = (state = initialState, action) => {
         SpotImages: [ ...action.spot.spot.SpotImages],
         Owner: { ...action.spot.spot.Owner}}};
         case ADD_SPOT:
+            newState = {...state}
+            newState[action.spot.id] = action.spot
+            console.log("this is the newState:", newState)
+            return newState;
+
     default:
       return state;
   }

@@ -21,8 +21,8 @@ function SingleSpot() {
 // console.log("Spotimages at 0",spot.SpotImages[0])
 // console.log("Spotimages at url",spot.SpotImages[0].url)
 
-const myUrl = spot.SpotImages[0].url
-console.log("my URL:", myUrl)
+// const myUrl = spot.SpotImages[0].url
+// console.log("my URL:", myUrl)
 
   useEffect(() => {
     dispatch(getSpot(id));
@@ -45,7 +45,7 @@ console.log("my URL:", myUrl)
             <img src={spot.SpotImages[4].url} alt={spot.name} />
           </div>
       </div> */}
-         <img src={myUrl} alt={spot.name} />
+         {/* <img src={myUrl} alt={spot.name} /> */}
         <div className="spot-location">
             {/* <div>{spot.SpotImages[0].url}</div> */}
           <span className="spot-city">{spot.city}</span>
