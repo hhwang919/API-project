@@ -47,7 +47,7 @@ const SpotListModal = () => {
 
 const handleClick = (spot) => {
     console.log("User onClick with spotId = ", spot.id)
-    history.push(`/api/spots/${spot.id}`); // Redirect to Singlespot component with the corresponding spot id
+    history.push(`/spots/${spot.id}`); // Redirect to Singlespot component with the corresponding spot id
   }
 
   return (

@@ -36,8 +36,8 @@ function SingleSpot() {
           {/* <span className="spot-state" >{spot.SpotImages[0].url}</span> */}
       <div className="spot-info">
           {/* <span className="spot-state" src={spot.Spotimages.url}>{spot.SpotImages.url}</span> */}
+          {spot.SpotImages && <img src={spot.SpotImages[0].url} alt={spot.name} />}
           {/* <div className="container">
-        <img src={spot.SpotImages[0].url} alt={spot.name} />
           <div className="image-container">
             <img src={spot.SpotImages[1].url} alt={spot.name} />
             <img src={spot.SpotImages[2].url} alt={spot.name} />
