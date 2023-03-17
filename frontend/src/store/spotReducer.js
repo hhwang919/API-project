@@ -11,6 +11,7 @@ import { csrfFetch } from './csrf';
 const ALL_SPOTS = 'spot/allSpots';
 const ONE_SPOT = 'spot/oneSpot';
 const ADD_SPOT = 'spot/addSpot';
+const USER_SPOTS = 'spot/userSpots';
 // const UPDATE_SPOT = 'spot/updateSpot';
 // const DELETE_SPOT = 'spot/deleteSpot';
 
@@ -34,6 +35,13 @@ export const addSpot = (spot) => {
     spot
   };
 };
+
+export const userSpots = (uspots) => {
+    return {
+      type: USER_SPOTS,
+      uspots
+    };
+  };
 
 // export const updateSpot = (spotId) => {   // AI use spot I think should use spotID
 //   return {
@@ -64,6 +72,14 @@ export const getSpot = (id) => async (dispatch) => {
     //console.log("spotReducer-spots: ", spots);
     dispatch(oneSpot(spot));
 }
+
+export const getUserSpots = () => async (dispatch) => {
+    const response = await csrfFetch('/api/spots/current');
+    const uspots = await response.json();
+    //console.log("spotReducer-spots: ", spots);
+    dispatch(userSpots(uspots));
+  }
+  
 
 
 export const createSpot = (spot) => async (dispatch) => {
@@ -109,6 +125,11 @@ export const createSpot = (spot) => async (dispatch) => {
 //     return true;
 //   }
 // };
+function normalizeSpots(spots) {
+    let normalizedSpots = {};
+    spots.Spots.forEach((spot) => normalizedSpots[spot.id] = spot);
+    return normalizedSpots;
+  }
 
 //const initialState = { entries: [], isLoading: true };
 const initialState = {allSpots: {}, singleSpot: {}};
@@ -119,11 +140,12 @@ console.log("this is action:", action)
 let newState;
   switch (action.type) {
     case ALL_SPOTS:
-        let normalizedSpots = {};
+        // let normalizedSpots = {};
         // console.log("action Spots:", action.spots)
-        action.spots.Spots.forEach((spot) => normalizedSpots[spot.id] = spot);
+        // action.spots.Spots.forEach((spot) => normalizedSpots[spot.id] = spot);
         // console.log("normalizedSpots: ", normalizedSpots);
-        return { ...state, allSpots: normalizedSpots }; 
+        const normalizedAllSpots = normalizeSpots(action.spots);
+        return { ...state, allSpots: normalizedAllSpots };
     case ONE_SPOT:
     //   console.log("action.spot")
       return { ...state, 
@@ -135,7 +157,9 @@ let newState;
             newState[action.spot.id] = action.spot
             console.log("this is the newState:", newState)
             return newState;
-
+        case USER_SPOTS:
+            const normalizedUserSpots = normalizeSpots(action.uspots);
+            return { ...state, allSpots: normalizedUserSpots }; 
     default:
       return state;
   }
