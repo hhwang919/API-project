@@ -6,9 +6,9 @@ const UserSpotTile = ({spot }) => {
     return (
         <>
         {/* // <div className='spot-tile' onClick={onClick}> */}
-      <div className="tile">
-        <img src={spot.previewImage} alt={spot.city} />
-        <div className="tile-text">
+      <div className="manage-tile">
+        <img src={spot.SpotImages} alt={spot.city} />
+        <div className="manage-tile-text">
           <h3>{spot.city}, {spot.state}</h3>
           <p>{spot.description}</p>
           <NavLink to={`/spots/current`} className="btn">See More</NavLink>

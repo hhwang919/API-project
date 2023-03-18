@@ -1,10 +1,4 @@
-.spot-tile {
-    display: grid;
-    border: 1px solid #ccc;
-    /* flex-direction: row; */
-    /* grid-template-columns: repeat(4, 1fr); */
-    /* gap: 20px; */
-  }
+
   
   .tile ul {
     display: grid;
@@ -18,15 +12,15 @@
     /* width: 280px; */
   }
 
-  .tile{
-    /* display: grid; */
-    /* border: 1px solid #ccc; */
-    flex-direction: row;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+  .manage-tile{
+    display: grid;
+    border: 1px solid #ccc;
+    /* flex-direction: row; */
+    /* grid-template-columns: repeat(4, 1fr); */
+    /* gap: 20px; */
   }
 
-  .spot-header ul{
+  .manage-spot-header ul{
     display: grid;
     /* border: 1px solid #ccc; */
     grid-template-columns: repeat(4, 1fr);
