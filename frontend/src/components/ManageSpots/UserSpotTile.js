@@ -11,8 +11,12 @@ const UserSpotTile = ({spot }) => {
         <div className="manage-tile-text">
           <h3>{spot.city}, {spot.state}</h3>
           <p>{spot.description}</p>
-          <NavLink to={`/spots/current`} className="btn">See More</NavLink>
-          
+          <NavLink to={`/spots/${spot.id}/edit`} className="btn">Edit</NavLink>
+          <br></br>
+          <br></br>
+          <NavLink to={`/spots/${spot.id}/edit`} className="btn">Delete</NavLink>
+          {/* <button onClick={() => onEdit(spot)}>Edit</button>
+          <button onClick={() => onDelete(spot)}>Delete</button> */}
         </div>
         
         {/* <Switch>

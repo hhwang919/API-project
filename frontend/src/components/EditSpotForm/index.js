@@ -3,13 +3,15 @@ import { NavLink, useHistory, useParams } from "react-router-dom";
 import * as spotState from "../../store/spotReducer";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createSpot } from "../../store/spotReducer";
+import { editSpot } from "../../store/spotReducer";
 
-const SpotForm = ( spot, formType ) =>{
-    const history = useHistory()
-    const dispatch = useDispatch()
+const EditSpotForm = ( spot  ) =>{
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const {id} = useParams();
+    // console.log("THis is usePARAMS ID", id)
 
-    const [address, setAddress] = useState("");
+    const [address, setAddress] = useState(spot.id);
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
     const [country, setCountry] = useState("");
@@ -25,7 +27,8 @@ const SpotForm = ( spot, formType ) =>{
        spot = {...spot, address, city, state, country, lat, lng, name, description, price }
         console.log("This is current spot:",spot)
     //    const newSpot = await dispatch(spotState.createSpot(spot))
-    const newSpot = await dispatch(createSpot(spot))
+    console.log("this is id", id)
+    const newSpot = await dispatch(editSpot(id,spot))
     // const parseSpot = newSpot.JSON()
        console.log("this is the newSpot:", newSpot)
    
@@ -35,7 +38,7 @@ const SpotForm = ( spot, formType ) =>{
 
     return(
         <>
-        <h1> Create a new Spot</h1>
+        <h1> Edit a new Spot</h1>
         <form onSubmit={handleSubmit} >
         <label> 
         Address
@@ -121,4 +124,4 @@ const SpotForm = ( spot, formType ) =>{
 
 };
 
-export default SpotForm;
+export default EditSpotForm;
