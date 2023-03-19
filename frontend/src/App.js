@@ -8,6 +8,8 @@ import SingleSpot from "./components/SingleSpot";
 import SpotListModal from "./components/SpotListModal"
 import CreateSpotForm from "./components/CreateSpot/CreateSpotForm";
 import ManageSpots from "./components/ManageSpots";
+import EditSpotForm from "./components/EditSpotForm";
+
 
 
 function App() {
@@ -26,6 +28,7 @@ const spot = []
           <Route exact path="/" component={SpotListModal}/> 
             <Route exact path="/spots/current" component={ManageSpots}/>
             <Route exact path="/spots/new" component={CreateSpotForm} />
+            <Route exact path="/spots/:id/edit" component={EditSpotForm}/>
           <Route exact path="/spots/:id">
             <SingleSpot spot={spot} />
             </Route> 

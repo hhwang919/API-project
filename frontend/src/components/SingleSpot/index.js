@@ -11,19 +11,6 @@ function SingleSpot() {
     
     // const spots = useSelector(state=>state.spotState.allSpots);
     const spot = useSelector(state=>state.spotState.singleSpot);
-    // console.log("this is singleSpot:", spot)
-    // console.log(spot);
-
-//   const spotsArray = Object.values(spots);
-//   //console.log(spotsArray)
-//   const spot = spotsArray.find(spot => spot.id === +id);
-// console.log("This is spotimages,", spot.SpotImages)
-
-// console.log("Spotimages at 0",spot.SpotImages[0])
-// console.log("Spotimages at url",spot.SpotImages[0].url)
-
-// const myUrl = spot.SpotImages[0].url
-// console.log("my URL:", myUrl)
 
   useEffect(() => {
     dispatch(getSpot(id));
@@ -38,15 +25,6 @@ function SingleSpot() {
       <div className="spot-info">
           {/* <span className="spot-state" src={spot.Spotimages.url}>{spot.SpotImages.url}</span> */}
           {spot.SpotImages && <img src={spot.SpotImages[0].url} alt={spot.name} />}
-          {/* <div className="container">
-          <div className="image-container">
-            <img src={spot.SpotImages[1].url} alt={spot.name} />
-            <img src={spot.SpotImages[2].url} alt={spot.name} />
-            <img src={spot.SpotImages[3].url} alt={spot.name} />
-            <img src={spot.SpotImages[4].url} alt={spot.name} />
-          </div>
-      </div> */}
-         {/* <img src={myUrl} alt={spot.name} /> */}
         <div className="spot-location">
             {/* <div>{spot.SpotImages[0].url}</div> */}
           <span className="spot-city">{spot.city}</span>

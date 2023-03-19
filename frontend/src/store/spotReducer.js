@@ -12,6 +12,7 @@ const ALL_SPOTS = 'spot/allSpots';
 const ONE_SPOT = 'spot/oneSpot';
 const ADD_SPOT = 'spot/addSpot';
 const USER_SPOTS = 'spot/userSpots';
+const EDIT_SPOTS = 'spot/editSpot';
 // const UPDATE_SPOT = 'spot/updateSpot';
 // const DELETE_SPOT = 'spot/deleteSpot';
 
@@ -40,6 +41,13 @@ export const userSpots = (uspots) => {
     return {
       type: USER_SPOTS,
       uspots
+    };
+  };
+
+  export const editASpot = (spot) => {
+    return {
+      type: EDIT_SPOTS,
+      spot
     };
   };
 
@@ -96,6 +104,27 @@ export const createSpot = (spot) => async (dispatch) => {
     const data = await response.json();
     console.log("this is data", data)
     dispatch(addSpot(data));
+    return data;
+  }
+};
+
+
+
+export const editSpot = (id , spot) => async (dispatch) => {
+    console.log("this is id:", id)
+    const { address, city, state, country, lat, lng, name, description, price } = spot;
+    const response = await csrfFetch(`/api/spots/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        address, city, state, country, lat, lng, name, description, price
+    })
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    console.log("this is data", data)
+    dispatch(editASpot(data));
     return data;
   }
 };
@@ -160,6 +189,10 @@ let newState;
         case USER_SPOTS:
             const normalizedUserSpots = normalizeSpots(action.uspots);
             return { ...state, userSpots: normalizedUserSpots }; 
+            case EDIT_SPOTS:
+                newState = {...state}
+                newState[action.spot.id] = action.spot
+                return newState;
     default:
       return state;
   }
