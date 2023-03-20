@@ -24,9 +24,8 @@ const SpotForm = ( spot, formType ) =>{
         e.preventDefault();
        spot = {...spot, address, city, state, country, lat, lng, name, description, price }
         console.log("This is current spot:",spot)
-    //    const newSpot = await dispatch(spotState.createSpot(spot))
+
     const newSpot = await dispatch(createSpot(spot))
-    // const parseSpot = newSpot.JSON()
        console.log("this is the newSpot:", newSpot)
    
         history.push(`/spots/${newSpot.id}`)
@@ -113,7 +112,7 @@ const SpotForm = ( spot, formType ) =>{
                 </label>
         <br>
         </br>
-        {/* <CreateSpot spot={spot} formType="Create Spot" /> */}
+     
         <input type="submit" value={"Create Spot"}/>
         </form>
         </>

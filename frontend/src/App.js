@@ -18,7 +18,6 @@ function App() {
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
-//create route for home page.
 const spot = []
   return (
     <>
@@ -32,7 +31,6 @@ const spot = []
           <Route exact path="/spots/:id">
             <SingleSpot spot={spot} />
             </Route> 
-          {/* <Route path="/api/spots" component={{SpotListModal}} />  */}
         </Switch>
       )}
     </>
@@ -41,7 +39,3 @@ const spot = []
 
 export default App;
 
-{/* <SpotListModal /> */}
-//build route for Home component
-
-//anything not rendered inside another componennt, should have its own component.

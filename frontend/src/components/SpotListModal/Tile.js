@@ -13,10 +13,7 @@ const Tile = ({spot, onClick}) => {
           <NavLink to={`/spots/${spot.id}`} className="btn">See More</NavLink>
           
         </div>
-        
-        {/* <Switch>
-          <Route path="/spots/:id" component={{SingleSpot}} />       
-        </Switch> */}
+
       </div>
         </div>
     )

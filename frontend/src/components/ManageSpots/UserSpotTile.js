@@ -20,7 +20,7 @@ const UserSpotTile = ({spot }) => {
 
     return (
         <>
-        {/* // <div className='spot-tile' onClick={onClick}> */}
+  
       <div className="manage-tile">
         <img src={spot.SpotImages} alt={spot.city} />
         <div className="manage-tile-text">
