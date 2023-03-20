@@ -34,14 +34,6 @@ function Navigation({ isLoaded }){
           buttonText="Sign Up"
           modalComponent={<SignupFormModal />}
         />
-        {/* <CreateSpot
-        buttonText="Creat Spot"
-        modalComponent={<CreateSpot />}
-        /> */}
-        {/* <OpenModalButton
-          buttonText="List All Spots"
-          modalComponent={<SpotListModal />}
-        /> */}
       </li>
     );
   }
@@ -56,13 +48,10 @@ function Navigation({ isLoaded }){
       {isLoaded && sessionLinks}
     </ul>
     <div>
-      {/* <SpotListModal /> */}
+
 
     </div>
 
-     {/* <div className='tile'>
-    <SpotListModal />
-    </div> */}
     </div>
   );
 }

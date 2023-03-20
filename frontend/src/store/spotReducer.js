@@ -1,11 +1,4 @@
 
-//CSRFT FETCH
-
-//REFACTOR Spotreducer
-
-//GET ALL spots working first.
-//Get Single spot
-
 import { csrfFetch } from './csrf';
 
 const ALL_SPOTS = 'spot/allSpots';
@@ -13,7 +6,6 @@ const ONE_SPOT = 'spot/oneSpot';
 const ADD_SPOT = 'spot/addSpot';
 const USER_SPOTS = 'spot/userSpots';
 const EDIT_SPOTS = 'spot/editSpot';
-// const UPDATE_SPOT = 'spot/updateSpot';
 const DELETE_SPOTS = 'spot/deleteSpot';
 
 export const allSpots = (spots) => {
@@ -61,23 +53,18 @@ export const removeSpot = (spotId) => {
 
 export const fetchSpots = () => async (dispatch) => {
   const response = await csrfFetch('/api/spots');
-  //const response = await csrfFetch('/api/spots');
   const spots = await response.json();
-  //console.log("spotReducer-spots: ", spots);
   dispatch(allSpots(spots));
 };
 export const getUserSpots = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots/current');
     const uspots = await response.json();
-    // console.log("spotReducer-spots: ", uspots);
     dispatch(userSpots(uspots));
   }
 
 export const getSpot = (id) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${id}`);
-    //const response = await csrfFetch('/api/spots');
     const spot = await response.json();
-    //console.log("spotReducer-spots: ", spots);
     dispatch(oneSpot(spot));
 }
 
@@ -143,19 +130,13 @@ function normalizeSpots(spots) {
     return normalizedSpots;
   }
 
-//const initialState = { entries: [], isLoading: true };
+
 const initialState = {allSpots: {}, singleSpot: {}, userSpots: {}};
 
 const spotReducer = (state = initialState, action) => {
-//   console.log("action.type",  action.type);
-// console.log("this is action:", action)
 let newState;
   switch (action.type) {
     case ALL_SPOTS:
-        // let normalizedSpots = {};
-        // console.log("action Spots:", action.spots)
-        // action.spots.Spots.forEach((spot) => normalizedSpots[spot.id] = spot);
-        // console.log("normalizedSpots: ", normalizedSpots);
         const normalizedAllSpots = normalizeSpots(action.spots);
         return { ...state, allSpots: normalizedAllSpots };
     case ONE_SPOT:

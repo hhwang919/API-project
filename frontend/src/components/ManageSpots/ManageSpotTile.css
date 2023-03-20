@@ -5,24 +5,18 @@
     background-color: #fff;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    /* flex-direction: row; */
-    /* border: 1px solid #ccc; */
-    /* padding: 20px; */
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    /* width: 280px; */
+
   }
 
   .manage-tile{
     display: grid;
     border: 1px solid #ccc;
-    /* flex-direction: row; */
-    /* grid-template-columns: repeat(4, 1fr); */
-    /* gap: 20px; */
+
   }
 
   .manage-spot-header ul{
     display: grid;
-    /* border: 1px solid #ccc; */
+
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
     gap: 20px;

@@ -9,7 +9,7 @@ const EditSpotForm = ( spot  ) =>{
     const history = useHistory();
     const dispatch = useDispatch();
     const {id} = useParams();
-    // console.log("THis is usePARAMS ID", id)
+
 
     const [address, setAddress] = useState(spot.id);
     const [city, setCity] = useState("");
@@ -26,10 +26,10 @@ const EditSpotForm = ( spot  ) =>{
         e.preventDefault();
        spot = {...spot, address, city, state, country, lat, lng, name, description, price }
         console.log("This is current spot:",spot)
-    //    const newSpot = await dispatch(spotState.createSpot(spot))
+
     console.log("this is id", id)
     const newSpot = await dispatch(editSpot(id,spot))
-    // const parseSpot = newSpot.JSON()
+
        console.log("this is the newSpot:", newSpot)
    
         history.push(`/spots/${newSpot.id}`)
@@ -116,7 +116,6 @@ const EditSpotForm = ( spot  ) =>{
                 </label>
         <br>
         </br>
-        {/* <CreateSpot spot={spot} formType="Create Spot" /> */}
         <input type="submit" value={"Edit Spot"}/>
         </form>
         </>

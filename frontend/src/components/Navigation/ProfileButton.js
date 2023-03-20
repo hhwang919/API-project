@@ -41,7 +41,7 @@ function ProfileButton({ user }) {
       </button>
       <ul className={ulClassName} ref={ulRef}>
         <li>{user.username}</li>
-        <li>{user.firstName} {user.lastName}</li> {/*link this line */}
+        <li>{user.firstName} {user.lastName}</li> 
         <li>{user.email}</li>
         <li>
           <NavLink to="/spots/current">Manage Spots</NavLink>
