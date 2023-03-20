@@ -38,7 +38,7 @@ const EditSpotForm = ( spot  ) =>{
 
     return(
         <>
-        <h1> Edit a new Spot</h1>
+        <h1> Edit a Spot</h1>
         <form onSubmit={handleSubmit} >
         <label> 
         Address
@@ -117,7 +117,7 @@ const EditSpotForm = ( spot  ) =>{
         <br>
         </br>
         {/* <CreateSpot spot={spot} formType="Create Spot" /> */}
-        <input type="submit" value={"Create Spot"}/>
+        <input type="submit" value={"Edit Spot"}/>
         </form>
         </>
     )
