@@ -14,7 +14,7 @@ const ADD_SPOT = 'spot/addSpot';
 const USER_SPOTS = 'spot/userSpots';
 const EDIT_SPOTS = 'spot/editSpot';
 // const UPDATE_SPOT = 'spot/updateSpot';
-// const DELETE_SPOT = 'spot/deleteSpot';
+const DELETE_SPOTS = 'spot/deleteSpot';
 
 export const allSpots = (spots) => {
   return {
@@ -51,19 +51,13 @@ export const userSpots = (uspots) => {
     };
   };
 
-// export const updateSpot = (spotId) => {   // AI use spot I think should use spotID
-//   return {
-//     type: UPDATE_SPOT,
-//     spotId
-//   };
-// };
 
-// export const deleteSpot = (spotId) => {
-//   return {
-//     type: DELETE_SPOT,
-//     spotId
-//   };
-// };
+export const removeSpot = (spotId) => {
+  return {
+    type: DELETE_SPOTS,
+    spotId
+  };
+};
 
 export const fetchSpots = () => async (dispatch) => {
   const response = await csrfFetch('/api/spots');
@@ -130,30 +124,19 @@ export const editSpot = (id , spot) => async (dispatch) => {
 };
 
 
-// export const editSpot = (spotId, payload) => async (dispatch) => {
-//   const response = await fetch(`/api/spots/${spotId}`, {
-//     method: 'PUT',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify(payload)
-//   });
 
-//   if (response.ok) {
-//     const spot = await response.json();
-//     dispatch(oneSpot(spotId));
-//     return spot;
-//   }
-// };
+export const deleteSpot = (spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
+    method: 'DELETE',
+  });
 
-// export const removeSpot = (spotId) => async (dispatch) => {
-//   const response = await fetch(`/api/spots/${spotId}`, {
-//     method: 'DELETE',
-//   });
+  if (response.ok) {
+    dispatch(removeSpot(spotId));
+    return true;
+  }
+};
 
-//   if (response.ok) {
-//     dispatch(oneSpot(spotId));
-//     return true;
-//   }
-// };
+
 function normalizeSpots(spots) {
     let normalizedSpots = {};
     spots.Spots.forEach((spot) => normalizedSpots[spot.id] = spot);
@@ -193,6 +176,10 @@ let newState;
                 newState = {...state}
                 newState[action.spot.id] = action.spot
                 return newState;
+                case DELETE_SPOTS:
+                    newState = {...state}
+                    delete newState[action.spotId]
+                    return newState;
     default:
       return state;
   }
