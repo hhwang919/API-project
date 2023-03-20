@@ -25,14 +25,16 @@ const ManageSpots = () => {
     const history = useHistory();
     const spots = useSelector(state=>state.spotState.userSpots);
 
-console.log("this is manage User:", spots)
+// console.log("this is manage User:", spots)
 //   console.log("spots :", spots)
 
   useEffect(() => {
     dispatch(getUserSpots());
   }, [dispatch]);
   
-
+//   useEffect(()=>{
+//     dispatch(getUserSpots());
+//   }, [spots]);
 
 // const handleClick = (spot) => {
 //     console.log("User onClick with spotId = ", spot.id)

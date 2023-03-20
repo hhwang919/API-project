@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { NavLink, useHistory } from "react-router-dom";
 import { Route, Switch } from "react-router-dom";
-import { deleteSpot } from "../../store/spotReducer";
+import { deleteSpot, getUserSpots } from "../../store/spotReducer";
 import SingleSpot from "../SingleSpot";
 
 
@@ -12,7 +12,8 @@ const UserSpotTile = ({spot }) => {
        const handleDelete = async (e) => {
             e.preventDefault();
             console.log("this is spot.id", spot.id)
-          await dispatch(deleteSpot(spot.id))
+            await dispatch(deleteSpot(spot.id))
+            await dispatch(getUserSpots())
             history.push(`/spots/current`)
           };
 
